@@ -2,20 +2,858 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Panel de Cliente</title>
-    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Hotel Pacífico | Reservas en Línea</title>
+    <!-- Google Fonts & Font Awesome for icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8;
+            color: #1e2a3e;
+            line-height: 1.5;
+        }
+
+        /* Contenedor principal */
+        .app-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+        }
+
+        /* HEADER / BARRA SUPERIOR */
+        .hotel-header {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.25rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.03), 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s;
+        }
+
+        .logo-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+            margin-bottom: 1.2rem;
+            border-bottom: 1px solid #e9edf2;
+            padding-bottom: 0.8rem;
+        }
+
+        .hotel-name h1 {
+            font-size: 1.9rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #1e4a6e, #2c7da0);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .user-actions {
+            display: flex;
+            gap: 1.2rem;
+            align-items: center;
+        }
+
+        .user-actions a {
+            text-decoration: none;
+            color: #2c7da0;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .user-actions a:hover {
+            color: #0f3b4f;
+            text-decoration: underline;
+        }
+
+        /* Navegación + fechas estilo */
+        .nav-dates {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 0.95rem;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .nav-links a i {
+            font-size: 0.9rem;
+            color: #2c7da0;
+        }
+
+        .nav-links a:hover {
+            color: #1e6f8f;
+        }
+
+        .date-range {
+            display: flex;
+            background: #f8fafc;
+            padding: 0.4rem 1rem;
+            border-radius: 60px;
+            gap: 1.2rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid #e2e8f0;
+        }
+
+        .date-range span i {
+            margin-right: 5px;
+            color: #2c7da0;
+        }
+
+        .search-btn {
+            background: #2c7da0;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            padding: 0.5rem 1.2rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .search-btn:hover {
+            background: #1f5e7a;
+            transform: scale(0.97);
+        }
+
+        /* LAYOUT PRINCIPAL: FILTROS + RESULTADOS */
+        .main-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        /* SIDEBAR FILTROS */
+        .filters-sidebar {
+            flex: 1.1;
+            min-width: 260px;
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            align-self: start;
+            position: sticky;
+            top: 1rem;
+        }
+
+        .filter-section {
+            margin-bottom: 2rem;
+            border-bottom: 1px solid #edf2f7;
+            padding-bottom: 1.2rem;
+        }
+
+        .filter-section h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #0f2b3b;
+        }
+
+        .price-range {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .price-inputs {
+            display: flex;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .price-inputs input {
+            width: 45%;
+            padding: 0.5rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            text-align: center;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            margin-top: 5px;
+            accent-color: #2c7da0;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        .filter-group label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .reset-filters {
+            background: #eef2f6;
+            border: none;
+            padding: 0.5rem;
+            width: 100%;
+            border-radius: 40px;
+            font-weight: 600;
+            margin-top: 0.5rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .reset-filters:hover {
+            background: #e2e8f0;
+        }
+
+        /* promo side cards */
+        .promo-card, .attraction-card {
+            background: #fef9e6;
+            border-radius: 1rem;
+            padding: 0.9rem;
+            margin-top: 1.2rem;
+            border-left: 4px solid #f4b942;
+        }
+
+        .attraction-card {
+            background: #eef6fa;
+            border-left-color: #2c7da0;
+            margin-top: 0.8rem;
+        }
+
+        .promo-card h4, .attraction-card h4 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .promo-card p, .attraction-card p {
+            font-size: 0.8rem;
+            color: #2d4a6e;
+        }
+
+        /* RESULTADOS (GRID) */
+        .results-area {
+            flex: 3;
+            min-width: 280px;
+        }
+
+        .results-header {
+            margin-bottom: 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-wrap: wrap;
+        }
+
+        .results-header h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a4b6e;
+        }
+
+        .room-counter {
+            background: #e2e8f0;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .rooms-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+        }
+
+        /* TARJETA DE HABITACIÓN */
+        .room-card {
+            background: white;
+            border-radius: 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .room-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .room-img {
+            flex: 1.2;
+            min-width: 180px;
+            background: #cbd5e1;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .room-details {
+            flex: 3;
+            padding: 1.3rem 1.5rem;
+        }
+
+        .room-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .room-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 0.8rem 0 1rem 0;
+        }
+
+        .feature-badge {
+            background: #f1f5f9;
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .room-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #0f5b7a;
+            margin: 0.5rem 0;
+        }
+
+        .price-night {
+            font-size: 0.8rem;
+            font-weight: normal;
+            color: #5c6f87;
+        }
+
+        .buttons-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 0.6rem;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #2c7da0;
+            padding: 0.5rem 1rem;
+            border-radius: 60px;
+            font-weight: 600;
+            color: #2c7da0;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: #2c7da0;
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 700;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-primary:hover, .btn-outline:hover {
+            transform: scale(0.96);
+            opacity: 0.9;
+        }
+
+        .no-results {
+            background: white;
+            padding: 2rem;
+            border-radius: 1.5rem;
+            text-align: center;
+            color: #5c6f87;
+        }
+
+        /* FOOTER QUICK LINKS */
+        .footer-quick {
+            margin-top: 3rem;
+            background: white;
+            border-radius: 1.5rem;
+            padding: 1.5rem 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 1.5rem;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #2b5d7a;
+            font-weight: 500;
+        }
+
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+
+        .copyright {
+            font-size: 0.75rem;
+            color: #6b7f94;
+        }
+
+        @media (max-width: 780px) {
+            .app-wrapper {
+                padding: 1rem;
+            }
+            .room-card {
+                flex-direction: column;
+            }
+            .room-img {
+                height: 160px;
+            }
+            .filters-sidebar {
+                position: static;
+            }
+        }
+
+        /* placeholders para imágenes */
+        .img-suite {
+            background-image: linear-gradient(125deg, #1e6f5c, #289672), url('https://placehold.co/400x250/eef2f6/2c7da0?text=Suite+Mar');
+            background-blend-mode: overlay;
+        }
+        .img-doble {
+            background-image: linear-gradient(125deg, #3a6b4b, #548b64), url('https://placehold.co/400x250/eef2f6/2c7da0?text=Doble+Estandar');
+            background-blend-mode: overlay;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Bienvenido, Cliente</h2>
-        <p>Seleccione la habitación que desea reservar:</p>
-        <ul>
-            <li><strong>Estándar:</strong> Ideal para viajes cortos.</li>
-            <li><strong>VIP:</strong> Mayor espacio y comodidades exclusivas.</li>
-            <li><strong>Suite:</strong> Máximo lujo y atención personalizada.</li>
-        </ul>
-        <button onclick="alert('Funcionalidad de nueva reserva en desarrollo')">Crear Nueva Reserva</button>
-        <br><br><a href="index.html">Cerrar Sesión</a>
+<div class="app-wrapper">
+    <!-- HEADER similar a la foto: Hotel Pacífico, pestañas, fechas -->
+    <div class="hotel-header">
+        <div class="logo-row">
+            <div class="hotel-name">
+                <h1><i class="fas fa-umbrella-beach"></i> Hotel Pacífico</h1>
+            </div>
+            <div class="user-actions">
+                <a href="#"><i class="fas fa-user-circle"></i> Mi Cuenta</a>
+                <a href="index.html" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </div>
+        <div class="nav-dates">
+            <div class="nav-links">
+                <a href="#"><i class="fas fa-bed"></i> Habitaciones</a>
+                <a href="#"><i class="fas fa-calendar-alt"></i> Mis Reservas</a>
+                <a href="#"><i class="fas fa-file-alt"></i> Hojas de Respuesta</a>
+                <a href="#"><i class="fas fa-concierge-bell"></i> Servicios</a>
+            </div>
+            <div class="date-range">
+                <span><i class="fas fa-calendar-check"></i> Check-in: 2/10 - 19/10</span>
+                <span><i class="fas fa-calendar-times"></i> Check-out: 12/10 - 19/10</span>
+            </div>
+            <button class="search-btn" id="simulateSearchBtn"><i class="fas fa-search"></i> Buscar</button>
+        </div>
     </div>
+
+    <!-- CONTENIDO PRINCIPAL: FILTROS + RESULTADOS -->
+    <div class="main-layout">
+        <!-- SIDEBAR FILTROS Y PROMOCIONES -->
+        <aside class="filters-sidebar">
+            <div class="filter-section">
+                <h3><i class="fas fa-tag"></i> Precio</h3>
+                <div class="price-range">
+                    <div class="price-inputs">
+                        <input type="number" id="minPrice" value="50" step="10" min="0" max="350"> 
+                        <input type="number" id="maxPrice" value="300" step="10" min="0" max="500">
+                    </div>
+                    <input type="range" id="priceSliderMin" min="0" max="500" value="50" step="5">
+                    <input type="range" id="priceSliderMax" min="0" max="500" value="300" step="5">
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3><i class="fas fa-door-open"></i> Tipo de Habitación</h3>
+                <div class="filter-group" id="typeFilters">
+                    <label><input type="checkbox" value="suite" checked> Suite Deluxe</label>
+                    <label><input type="checkbox" value="doble" checked> Habitación Doble</label>
+                    <label><input type="checkbox" value="individual" disabled> Habitación Individual <span style="color:#94a3b8;">(próximamente)</span></label>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h3><i class="fas fa-concierge-bell"></i> Servicios</h3>
+                <div class="filter-group" id="servicesFilters">
+                    <label><input type="checkbox" value="vistaMar" checked> Vista al mar</label>
+                    <label><input type="checkbox" value="desayuno" checked> Desayuno incluido</label>
+                    <label><input type="checkbox" value="jacuzzi" checked> Jacuzzi</label>
+                    <label><input type="checkbox" value="wifi" checked> Wi-Fi gratis</label>
+                </div>
+            </div>
+            <button class="reset-filters" id="resetFiltersBtn"><i class="fas fa-sync-alt"></i> Restablecer filtros</button>
+
+            <!-- Promociones / atractivos locales según la imagen -->
+            <div class="promo-card">
+                <h4><i class="fas fa-star"></i> Promoción de vista al Mar</h4>
+                <p>📍 Local de atracción de Acunca · vistas panorámicas · -20% en excursiones</p>
+            </div>
+            <div class="attraction-card">
+                <h4><i class="fas fa-water"></i> Local de atracción de Puantico</h4>
+                <p>🌊 Tour de manglares + snorkel · salidas desde el hotel</p>
+            </div>
+        </aside>
+
+        <!-- RESULTADOS DE BÚSQUEDA: tarjetas dinámicas -->
+        <div class="results-area">
+            <div class="results-header">
+                <h2>Resultados que más buscadas <i class="fas fa-chart-line"></i></h2>
+                <div class="room-counter" id="roomCounter">2 habitaciones disponibles</div>
+            </div>
+            <div class="rooms-grid" id="roomsContainer">
+                <!-- Las tarjetas se generarán con JS para mantener filtros dinámicos, pero también tenemos datos fijos que vienen de la foto -->
+                <!-- Cargaremos mediante datos -->
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER QUICK LINKS (similar a la imagen) -->
+    <div class="footer-quick">
+        <div class="footer-links">
+            <a href="#">🏠 Habitaciones</a>
+            <a href="#">📋 Mis Reservas</a>
+            <a href="#">📞 Contacto</a>
+            <a href="#">🧾 Servicios</a>
+            <a href="#">ℹ️ Info Hotel</a>
+        </div>
+        <div class="copyright">
+            <i class="far fa-copyright"></i> 2026 Hotel Pacífico · Relax frente al mar
+        </div>
+    </div>
+</div>
+
+<script>
+    // === DATOS DE LAS HABITACIONES SEGÚN DESCRIPCIÓN DE LA FOTO ===
+    const roomsData = [
+        {
+            id: "suite",
+            type: "suite",
+            name: "Suíte Deluxe Vista al Mar",
+            size: "45 m²",
+            bed: "Cama King",
+            amenities: ["Baño privado", "WiFi", "TV", "Cofre", "Aire", "Meo (minibar)", "Vista al mar"],
+            price: 150,      // USD total / noche?
+            priceText: "$150 USD",
+            priceSuffix: "",
+            imgClass: "img-suite",
+            services: {
+                vistaMar: true,
+                desayuno: false,
+                jacuzzi: false,
+                wifi: true
+            },
+            badgeFeatures: ["Cama King", "Jacuzzi no", "Vista al mar", "Aire Acondicionado"]
+        },
+        {
+            id: "doble",
+            type: "doble",
+            name: "Habitación Doble Estándar",
+            size: "30 m²",
+            bed: "2 camas individuales",
+            amenities: ["Escritorio", "WiFi", "TV", "Cofre", "Aire", "Espejo (Miro)"],
+            price: 95,
+            priceText: "$95 USD",
+            priceSuffix: "/noche",
+            imgClass: "img-doble",
+            services: {
+                vistaMar: false,
+                desayuno: false,
+                jacuzzi: false,
+                wifi: true
+            },
+            badgeFeatures: ["2 camas individuales", "Escritorio", "WiFi", "Aire", "Cofre"]
+        }
+    ];
+
+    // Función para renderizar tarjetas según filtros activos
+    let activeTypeFilters = { suite: true, doble: true };      // suite, doble
+    let activeServiceFilters = { vistaMar: true, desayuno: true, jacuzzi: true, wifi: true };
+    let minPriceFilter = 50;
+    let maxPriceFilter = 300;
+
+    // Elementos DOM
+    const roomsContainer = document.getElementById("roomsContainer");
+    const roomCounterSpan = document.getElementById("roomCounter");
+
+    // Checkboxes Tipo
+    const typeSuiteCheck = document.querySelector('#typeFilters input[value="suite"]');
+    const typeDobleCheck = document.querySelector('#typeFilters input[value="doble"]');
+
+    // Checkboxes Servicios
+    const serviceVistaMar = document.querySelector('#servicesFilters input[value="vistaMar"]');
+    const serviceDesayuno = document.querySelector('#servicesFilters input[value="desayuno"]');
+    const serviceJacuzzi = document.querySelector('#servicesFilters input[value="jacuzzi"]');
+    const serviceWifi = document.querySelector('#servicesFilters input[value="wifi"]');
+
+    // Inputs precio y sliders
+    const minPriceInput = document.getElementById("minPrice");
+    const maxPriceInput = document.getElementById("maxPrice");
+    const sliderMin = document.getElementById("priceSliderMin");
+    const sliderMax = document.getElementById("priceSliderMax");
+
+    function updatePriceFromSliders() {
+        let minVal = parseInt(sliderMin.value);
+        let maxVal = parseInt(sliderMax.value);
+        if (minVal > maxVal) {
+            [sliderMin.value, sliderMax.value] = [maxVal, minVal];
+            minVal = parseInt(sliderMin.value);
+            maxVal = parseInt(sliderMax.value);
+        }
+        minPriceInput.value = minVal;
+        maxPriceInput.value = maxVal;
+        minPriceFilter = minVal;
+        maxPriceFilter = maxVal;
+        applyFilters();
+    }
+
+    function updatePriceFromInputs() {
+        let minVal = parseInt(minPriceInput.value);
+        let maxVal = parseInt(maxPriceInput.value);
+        if (isNaN(minVal)) minVal = 50;
+        if (isNaN(maxVal)) maxVal = 300;
+        if (minVal > maxVal) { let temp = minVal; minVal = maxVal; maxVal = temp; }
+        minPriceFilter = Math.max(0, minVal);
+        maxPriceFilter = Math.min(500, maxVal);
+        minPriceInput.value = minPriceFilter;
+        maxPriceInput.value = maxPriceFilter;
+        sliderMin.value = minPriceFilter;
+        sliderMax.value = maxPriceFilter;
+        applyFilters();
+    }
+
+    function getActiveTypeFilters() {
+        return {
+            suite: typeSuiteCheck.checked,
+            doble: typeDobleCheck.checked
+        };
+    }
+
+    function getActiveServiceFilters() {
+        return {
+            vistaMar: serviceVistaMar.checked,
+            desayuno: serviceDesayuno.checked,
+            jacuzzi: serviceJacuzzi.checked,
+            wifi: serviceWifi.checked
+        };
+    }
+
+    function matchesServiceFilters(roomServices) {
+        const active = getActiveServiceFilters();
+        // Para cada servicio activo, la habitación debe tenerlo true.
+        // Si el usuario pide "Vista al mar", la habitación debe tener vistaMar: true
+        if (active.vistaMar && !roomServices.vistaMar) return false;
+        if (active.desayuno && !roomServices.desayuno) return false;
+        if (active.jacuzzi && !roomServices.jacuzzi) return false;
+        if (active.wifi && !roomServices.wifi) return false;
+        return true;
+    }
+
+    function applyFilters() {
+        const typeActive = getActiveTypeFilters();
+        const priceMin = minPriceFilter;
+        const priceMax = maxPriceFilter;
+
+        const filteredRooms = roomsData.filter(room => {
+            // Filtro tipo
+            if (room.type === "suite" && !typeActive.suite) return false;
+            if (room.type === "doble" && !typeActive.doble) return false;
+            // Filtro precio
+            if (room.price < priceMin || room.price > priceMax) return false;
+            // Filtro servicios
+            if (!matchesServiceFilters(room.services)) return false;
+            return true;
+        });
+
+        renderRooms(filteredRooms);
+        roomCounterSpan.innerText = `${filteredRooms.length} habitación${filteredRooms.length !== 1 ? 'es' : ''} disponible${filteredRooms.length !== 1 ? 's' : ''}`;
+    }
+
+    function renderRoemsFallback(roomsArray) {
+        // renderRooms
+        if (!roomsArray.length) {
+            roomsContainer.innerHTML = `<div class="no-results"><i class="fas fa-search-minus"></i> No hay habitaciones con los filtros actuales. Ajusta los criterios.</div>`;
+            return;
+        }
+        roomsContainer.innerHTML = roomsArray.map(room => {
+            // Construir lista de amenities desde room.amenities
+            const amenitiesHtml = room.amenities.map(am => `<span class="feature-badge"><i class="fas fa-check-circle"></i> ${am}</span>`).join('');
+            // Precio formateado
+            const priceDisplay = room.priceSuffix ? `${room.priceText} ${room.priceSuffix}` : `${room.priceText}`;
+            // Botones específicos según la imagen: Suite tiene "Ver más detalles" y "Reservar A"; Doble tiene "Reservar Ahora" y "Más detalles"
+            let buttonGroup = '';
+            if (room.id === 'suite') {
+                buttonGroup = `
+                    <button class="btn-outline view-details" data-room="${room.name}"><i class="far fa-eye"></i> Ver más detalles</button>
+                    <button class="btn-primary book-room" data-room="${room.name}" data-price="${room.priceText}"><i class="fas fa-check-circle"></i> Reservar A</button>
+                `;
+            } else {
+                buttonGroup = `
+                    <button class="btn-primary book-room" data-room="${room.name}" data-price="${room.priceText}"><i class="fas fa-calendar-check"></i> Reservar Ahora</button>
+                    <button class="btn-outline view-details" data-room="${room.name}"><i class="fas fa-info-circle"></i> Más detalles</button>
+                `;
+            }
+            return `
+                <div class="room-card" data-room-id="${room.id}">
+                    <div class="room-img ${room.imgClass}" style="background-size: cover; min-height: 180px;"></div>
+                    <div class="room-details">
+                        <div class="room-title">
+                            <span>${room.name}</span>
+                            <span class="room-price">${priceDisplay}</span>
+                        </div>
+                        <div class="room-features">
+                            ${amenitiesHtml}
+                        </div>
+                        <div class="room-features">
+                            <span class="feature-badge"><i class="fas fa-expand-alt"></i> ${room.size}</span>
+                            <span class="feature-badge"><i class="fas fa-bed"></i> ${room.bed}</span>
+                        </div>
+                        <div class="buttons-row">
+                            ${buttonGroup}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Agregar eventos a los botones después del render
+        document.querySelectorAll('.view-details').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const roomName = btn.getAttribute('data-room');
+                alert(`🔍 Detalles de ${roomName}\n✔️ Incluye amenities premium, vista disponible y servicio a la habitación. Para más información contacte recepción.`);
+            });
+        });
+        document.querySelectorAll('.book-room').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const roomName = btn.getAttribute('data-room');
+                const price = btn.getAttribute('data-price');
+                alert(`🛎️ ¡Excelente elección! Ha iniciado la reserva de ${roomName} por ${price}. Próximamente podrá completar el pago y confirmar.`);
+            });
+        });
+    }
+
+    function renderRooms(roomsArray) {
+        renderRoemsFallback(roomsArray);
+    }
+
+    // Sincronizar sliders + inputs
+    function initFiltersEventListeners() {
+        typeSuiteCheck.addEventListener('change', applyFilters);
+        typeDobleCheck.addEventListener('change', applyFilters);
+        serviceVistaMar.addEventListener('change', applyFilters);
+        serviceDesayuno.addEventListener('change', applyFilters);
+        serviceJacuzzi.addEventListener('change', applyFilters);
+        serviceWifi.addEventListener('change', applyFilters);
+        
+        minPriceInput.addEventListener('change', updatePriceFromInputs);
+        maxPriceInput.addEventListener('change', updatePriceFromInputs);
+        sliderMin.addEventListener('input', function() {
+            let val = parseInt(sliderMin.value);
+            let maxVal = parseInt(sliderMax.value);
+            if (val > maxVal) sliderMin.value = maxVal;
+            updatePriceFromSliders();
+        });
+        sliderMax.addEventListener('input', function() {
+            let val = parseInt(sliderMax.value);
+            let minVal = parseInt(sliderMin.value);
+            if (val < minVal) sliderMax.value = minVal;
+            updatePriceFromSliders();
+        });
+
+        document.getElementById('resetFiltersBtn').addEventListener('click', () => {
+            typeSuiteCheck.checked = true;
+            typeDobleCheck.checked = true;
+            serviceVistaMar.checked = true;
+            serviceDesayuno.checked = true;
+            serviceJacuzzi.checked = true;
+            serviceWifi.checked = true;
+            minPriceInput.value = 50;
+            maxPriceInput.value = 300;
+            sliderMin.value = 50;
+            sliderMax.value = 300;
+            minPriceFilter = 50;
+            maxPriceFilter = 300;
+            applyFilters();
+        });
+
+        // Buscar simular botón search (solo feedback)
+        const searchBtn = document.getElementById('simulateSearchBtn');
+        if(searchBtn){
+            searchBtn.addEventListener('click', () => {
+                alert("🔎 Búsqueda actualizada con las fechas: Check-in 2/10 - 19/10, Check-out 12/10 - 19/10. Mostrando disponibilidad actual.");
+                applyFilters();
+            });
+        }
+    }
+
+    // Inicialización
+    function init() {
+        // establecer valores iniciales de precio
+        minPriceFilter = 50;
+        maxPriceFilter = 300;
+        minPriceInput.value = 50;
+        maxPriceInput.value = 300;
+        sliderMin.value = 50;
+        sliderMax.value = 300;
+        initFiltersEventListeners();
+        applyFilters();
+    }
+
+    init();
+</script>
 </body>
 </html>
