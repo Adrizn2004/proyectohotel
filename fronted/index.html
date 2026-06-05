@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma Hotelera</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Hotel Gran Estancia</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Habitaciones</a></li>
+                <li><a href="#">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2>Reserve su habitación ideal</h2>
+            <form id="reserva-form">
+                <label for="fecha-ingreso">Ingreso:</label>
+                <input type="date" id="fecha-ingreso" required>
+                
+                <label for="fecha-salida">Salida:</label>
+                <input type="date" id="fecha-salida" required>
+                
+                <button type="submit">Consultar Disponibilidad</button>
+            </form>
+            <div id="resultado"></div>
+        </section>
+    </main>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
