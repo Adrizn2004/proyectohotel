@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Hotel Mour | Acceso Corporativo</title>
-    <!-- Google Fonts & Font Awesome -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Inter + Playfair Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
@@ -63,7 +63,7 @@
             position: relative;
             z-index: 10;
             width: 100%;
-            max-width: 500px;
+            max-width: 520px;
             padding: 1.5rem;
             margin: 1rem;
         }
@@ -96,22 +96,25 @@
             }
         }
 
-        /* Logo y encabezado - sin icono */
+        /* Logo y encabezado - Título con Playfair Display */
         .hotel-brand {
             text-align: center;
             margin-bottom: 2rem;
         }
         .hotel-brand h2 {
-            font-size: 2rem;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-            background: linear-gradient(130deg, #F0F3FA, #C8D3EB);
+            font-family: 'Playfair Display', serif;
+            font-size: 2.3rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            background: linear-gradient(135deg, #F2F6FF, #C8D3EB);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .hotel-brand p {
+            font-family: 'Inter', sans-serif;
             color: #8E9EBB;
             font-size: 0.85rem;
             font-weight: 400;
@@ -135,19 +138,20 @@
         }
         .input-field:hover {
             background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(200, 180, 120, 0.5);
+            border-color: rgba(184, 164, 107, 0.5);
         }
         .input-field.focused {
-            border-color: #B8A46B;
+            border-color: #C6AE6B;
             background: rgba(255, 255, 255, 0.09);
-            box-shadow: 0 0 0 3px rgba(184, 164, 107, 0.2);
+            box-shadow: 0 0 0 3px rgba(198, 174, 107, 0.2);
         }
 
         .input-field i:first-child {
             padding-left: 1.2rem;
             font-size: 1.1rem;
-            color: #8E9EBB;
+            color: #9AABCA;
             transition: color 0.2s;
+            width: 2.2rem;
         }
         .input-field input {
             background: transparent;
@@ -170,11 +174,11 @@
             cursor: pointer;
             padding-right: 1.2rem;
             font-size: 1rem;
-            color: #8E9EBB;
+            color: #9AABCA;
             transition: color 0.2s, transform 0.1s;
         }
         .toggle-password:hover {
-            color: #B8A46B;
+            color: #C6AE6B;
             transform: scale(1.05);
         }
 
@@ -194,65 +198,69 @@
             cursor: pointer;
         }
         .checkbox-label input {
-            accent-color: #B8A46B;
+            accent-color: #C6AE6B;
             width: 1rem;
             height: 1rem;
             cursor: pointer;
         }
         .forgot-link {
-            color: #B8A46B;
+            color: #C6AE6B;
             font-size: 0.8rem;
             text-decoration: none;
             font-weight: 500;
             transition: color 0.2s;
         }
         .forgot-link:hover {
-            color: #DBCE9C;
+            color: #DFCD97;
             text-decoration: underline;
         }
 
-        /* Botón principal formal */
+        /* Botón principal con mayor peso visual */
         .login-btn {
             width: 100%;
-            padding: 0.9rem;
-            border-radius: 2rem;
+            padding: 1rem 1.2rem;
+            border-radius: 2.2rem;
             border: none;
-            background: linear-gradient(95deg, #2C3548, #1E2538);
-            color: #EFF3FC;
-            font-weight: 600;
-            font-size: 1rem;
+            background: linear-gradient(105deg, #2E384F, #1B2338);
+            color: #F2F6FF;
+            font-weight: 700;
+            font-size: 1.05rem;
             font-family: 'Inter', sans-serif;
-            letter-spacing: 0.8px;
+            letter-spacing: 1.5px;
             cursor: pointer;
-            transition: all 0.25s ease;
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255,255,255,0.05);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
-            border: 1px solid rgba(184, 164, 107, 0.3);
+            border: 1px solid rgba(198, 174, 107, 0.4);
+            text-transform: uppercase;
         }
         .login-btn i {
-            font-size: 0.9rem;
+            font-size: 1rem;
             transition: transform 0.2s;
+            color: #DBCE9C;
         }
         .login-btn:hover {
-            background: linear-gradient(95deg, #3B465F, #2A3248);
-            transform: scale(1.01);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-            border-color: rgba(184, 164, 107, 0.6);
+            background: linear-gradient(105deg, #3C4868, #252F48);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 26px rgba(0, 0, 0, 0.5);
+            border-color: rgba(198, 174, 107, 0.7);
         }
         .login-btn:active {
-            transform: scale(0.98);
+            transform: translateY(1px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.4);
         }
         .login-btn.loading {
             pointer-events: none;
             opacity: 0.85;
-            background: linear-gradient(95deg, #2B3248, #1F2538);
+            background: linear-gradient(105deg, #2B3248, #1F2538);
+            transform: none;
         }
         .btn-spinner {
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             border: 2px solid rgba(255,255,255,0.3);
             border-top: 2px solid #EFF3FC;
             border-radius: 50%;
@@ -268,7 +276,7 @@
             margin-bottom: 0rem;
         }
         .dynamic-message {
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.8);
             backdrop-filter: blur(12px);
             padding: 0.7rem 1rem;
             border-radius: 1.8rem;
@@ -285,7 +293,7 @@
             color: #FFD8D8;
         }
         .dynamic-message.success {
-            border-left-color: #7FAA7A;
+            border-left-color: #8BBF8A;
             color: #DAF0D6;
         }
         .dynamic-message i {
@@ -312,13 +320,14 @@
             width: fit-content;
             margin-left: auto;
             margin-right: auto;
-            padding: 0.3rem 1rem;
+            padding: 0.35rem 1rem;
             border-radius: 50px;
             backdrop-filter: blur(2px);
         }
         .demo-hint i {
             margin-right: 6px;
             font-size: 0.7rem;
+            color: #B8A46B;
         }
 
         /* shake dinamico para error */
@@ -339,7 +348,11 @@
                 padding: 1.8rem 1.5rem 2rem;
             }
             .hotel-brand h2 {
-                font-size: 1.7rem;
+                font-size: 1.9rem;
+            }
+            .login-btn {
+                padding: 0.85rem 1rem;
+                font-size: 0.95rem;
             }
         }
     </style>
@@ -348,7 +361,6 @@
     <div class="login-wrapper">
         <div class="login-card">
             <div class="hotel-brand">
-                <!-- Icono eliminado por solicitud -->
                 <h2>Hotel Mour</h2>
                 <p>Acceso corporativo · Gestión ejecutiva</p>
             </div>
