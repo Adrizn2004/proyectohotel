@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Reporte General de Reservas</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID Reserva</th>
+                    <th>Cliente</th>
+                    <th>Habitación</th>
+                    <th>Check-In</th>
+                    <th>Check-Out</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-reservas"></tbody>
+        </table>
+        <br><a href="index.html">Cerrar Sesión</a>
+    </div>
+
+    <script>
+        fetch('http://localhost:5000/api/admin/reservas')
+            .then(res => res.json())
+            .then(data => {
+                const tbody = document.getElementById('tabla-reservas');
+                data.forEach(r => {
+                    tbody.innerHTML += `<tr>
+                        <td>${r.id_reserva}</td>
+                        <td>${r.correo}</td>
+                        <td>${r.habitacion}</td>
+                        <td>${r.fecha_ingreso}</td>
+                        <td>${r.fecha_salida}</td>
+                    </tr>`;
+                });
+            });
+    </script>
+</body>
+</html>
