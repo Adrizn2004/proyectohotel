@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Hotel Éclat | Acceso Ejecutivo</title>
+    <title>Hotel Mour | Acceso Corporativo</title>
     <!-- Google Fonts & Font Awesome -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -17,7 +17,7 @@
         body {
             font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #0B1120 0%, #19223B 50%, #2A2F4B 100%);
+            background: linear-gradient(145deg, #0A0F1C 0%, #12182B 50%, #1A1F32 100%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -25,14 +25,14 @@
             overflow-x: hidden;
         }
 
-        /* Fondo dinámico con partículas animadas */
+        /* Fondo dinámico más sutil y formal */
         body::before {
             content: '';
             position: absolute;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle at 20% 40%, rgba(120, 80, 200, 0.2) 0%, rgba(0, 0, 0, 0) 60%);
-            animation: drift 28s infinite alternate ease-in-out;
+            background: radial-gradient(circle at 20% 40%, rgba(80, 100, 150, 0.12) 0%, rgba(0, 0, 0, 0) 70%);
+            animation: drift 30s infinite alternate ease-in-out;
             pointer-events: none;
             z-index: 0;
         }
@@ -42,20 +42,20 @@
             position: absolute;
             width: 180%;
             height: 180%;
-            background: radial-gradient(circle at 80% 70%, rgba(80, 150, 200, 0.15) 0%, rgba(0, 0, 0, 0) 55%);
-            animation: driftReverse 22s infinite alternate ease-in-out;
+            background: radial-gradient(circle at 80% 70%, rgba(60, 80, 120, 0.08) 0%, rgba(0, 0, 0, 0) 65%);
+            animation: driftReverse 24s infinite alternate ease-in-out;
             pointer-events: none;
             z-index: 0;
         }
 
         @keyframes drift {
-            0% { transform: translate(-10%, -10%); opacity: 0.6; }
-            100% { transform: translate(10%, 10%); opacity: 1; }
+            0% { transform: translate(-10%, -10%); opacity: 0.5; }
+            100% { transform: translate(10%, 10%); opacity: 0.8; }
         }
 
         @keyframes driftReverse {
-            0% { transform: translate(10%, 10%); opacity: 0.4; }
-            100% { transform: translate(-15%, -15%); opacity: 0.9; }
+            0% { transform: translate(10%, 10%); opacity: 0.3; }
+            100% { transform: translate(-15%, -15%); opacity: 0.7; }
         }
 
         /* contenedor principal */
@@ -68,20 +68,20 @@
             margin: 1rem;
         }
 
-        /* Tarjeta glassmorfismo + animación entrada */
+        /* Tarjeta glassmorfismo refinado */
         .login-card {
-            background: rgba(15, 25, 45, 0.65);
-            backdrop-filter: blur(16px);
-            border-radius: 2.5rem;
+            background: rgba(12, 18, 30, 0.75);
+            backdrop-filter: blur(18px);
+            border-radius: 2rem;
             padding: 2.2rem 2rem 2.5rem;
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.08);
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.06);
             transition: transform 0.3s ease, box-shadow 0.4s ease;
             animation: cardFloatIn 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1);
         }
 
         .login-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 35px 55px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.15);
+            transform: translateY(-4px);
+            box-shadow: 0 35px 55px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
         }
 
         @keyframes cardFloatIn {
@@ -96,37 +96,29 @@
             }
         }
 
-        /* Logo y encabezado */
+        /* Logo y encabezado - sin icono */
         .hotel-brand {
             text-align: center;
             margin-bottom: 2rem;
         }
-        .icon-hotel {
-            font-size: 3.2rem;
-            background: linear-gradient(135deg, #E6D5B8, #C9A96E);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin-bottom: 0.5rem;
-        }
         .hotel-brand h2 {
-            font-size: 1.9rem;
+            font-size: 2rem;
             font-weight: 600;
-            letter-spacing: -0.3px;
-            background: linear-gradient(120deg, #FFFFFF, #C0CFEC);
+            letter-spacing: -0.5px;
+            background: linear-gradient(130deg, #F0F3FA, #C8D3EB);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.4rem;
         }
         .hotel-brand p {
-            color: #9AAEC9;
+            color: #8E9EBB;
             font-size: 0.85rem;
             font-weight: 400;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
         }
 
-        /* campos de entrada modernos */
+        /* campos de entrada elegantes */
         .input-group {
             margin-bottom: 1.6rem;
             position: relative;
@@ -135,58 +127,58 @@
         .input-field {
             display: flex;
             align-items: center;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 1.8rem;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 1.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.25s ease;
             backdrop-filter: blur(4px);
         }
         .input-field:hover {
-            background: rgba(255, 255, 255, 0.12);
-            border-color: rgba(255, 215, 150, 0.5);
+            background: rgba(255, 255, 255, 0.07);
+            border-color: rgba(200, 180, 120, 0.5);
         }
         .input-field.focused {
-            border-color: #E5B85C;
-            background: rgba(255, 255, 255, 0.14);
-            box-shadow: 0 0 0 3px rgba(229, 184, 92, 0.2);
+            border-color: #B8A46B;
+            background: rgba(255, 255, 255, 0.09);
+            box-shadow: 0 0 0 3px rgba(184, 164, 107, 0.2);
         }
 
         .input-field i:first-child {
             padding-left: 1.2rem;
-            font-size: 1.2rem;
-            color: #C0CFEC;
+            font-size: 1.1rem;
+            color: #8E9EBB;
             transition: color 0.2s;
         }
         .input-field input {
             background: transparent;
             border: none;
             padding: 1rem 0.8rem;
-            font-size: 1rem;
+            font-size: 0.95rem;
             width: 100%;
-            color: white;
+            color: #EDF2FB;
             font-weight: 500;
             outline: none;
             font-family: 'Inter', sans-serif;
         }
         .input-field input::placeholder {
-            color: rgba(200, 215, 240, 0.7);
+            color: rgba(140, 160, 190, 0.7);
             font-weight: 400;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
         /* Botón de mostrar/ocultar contraseña */
         .toggle-password {
             cursor: pointer;
             padding-right: 1.2rem;
-            font-size: 1.1rem;
-            color: #A0B4D4;
+            font-size: 1rem;
+            color: #8E9EBB;
             transition: color 0.2s, transform 0.1s;
         }
         .toggle-password:hover {
-            color: #E5B85C;
+            color: #B8A46B;
             transform: scale(1.05);
         }
 
-        /* opciones extra (recordar + olvidé) */
+        /* opciones extra */
         .options-row {
             display: flex;
             justify-content: space-between;
@@ -197,56 +189,58 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            color: #B7CAE8;
-            font-size: 0.85rem;
+            color: #A1B0CC;
+            font-size: 0.8rem;
             cursor: pointer;
         }
         .checkbox-label input {
-            accent-color: #E5B85C;
+            accent-color: #B8A46B;
             width: 1rem;
             height: 1rem;
             cursor: pointer;
         }
         .forgot-link {
-            color: #E5B85C;
-            font-size: 0.85rem;
+            color: #B8A46B;
+            font-size: 0.8rem;
             text-decoration: none;
             font-weight: 500;
             transition: color 0.2s;
         }
         .forgot-link:hover {
-            color: #FFD78C;
+            color: #DBCE9C;
             text-decoration: underline;
         }
 
-        /* Botón principal dinámico */
+        /* Botón principal formal */
         .login-btn {
             width: 100%;
             padding: 0.9rem;
-            border-radius: 2.5rem;
+            border-radius: 2rem;
             border: none;
-            background: linear-gradient(95deg, #E5B85C, #D19B3A);
-            color: #0B1120;
-            font-weight: 700;
-            font-size: 1.05rem;
+            background: linear-gradient(95deg, #2C3548, #1E2538);
+            color: #EFF3FC;
+            font-weight: 600;
+            font-size: 1rem;
             font-family: 'Inter', sans-serif;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.8px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 18px rgba(0,0,0,0.2);
+            transition: all 0.25s ease;
+            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 12px;
+            border: 1px solid rgba(184, 164, 107, 0.3);
         }
         .login-btn i {
-            font-size: 1rem;
+            font-size: 0.9rem;
             transition: transform 0.2s;
         }
         .login-btn:hover {
-            background: linear-gradient(95deg, #F0C674, #E5AC4A);
+            background: linear-gradient(95deg, #3B465F, #2A3248);
             transform: scale(1.01);
-            box-shadow: 0 12px 24px rgba(0,0,0,0.25);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            border-color: rgba(184, 164, 107, 0.6);
         }
         .login-btn:active {
             transform: scale(0.98);
@@ -254,30 +248,30 @@
         .login-btn.loading {
             pointer-events: none;
             opacity: 0.85;
-            background: linear-gradient(95deg, #bc9449, #a57d38);
+            background: linear-gradient(95deg, #2B3248, #1F2538);
         }
         .btn-spinner {
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(0,0,0,0.2);
-            border-top: 2px solid #0B1120;
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top: 2px solid #EFF3FC;
             border-radius: 50%;
             animation: spin 0.7s linear infinite;
             display: inline-block;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* mensajes de feedback dinámico (toast integrado) */
+        /* mensajes de feedback */
         .message-area {
             min-height: 52px;
             margin-top: 1.2rem;
             margin-bottom: 0rem;
         }
         .dynamic-message {
-            background: rgba(0, 0, 0, 0.65);
+            background: rgba(0, 0, 0, 0.75);
             backdrop-filter: blur(12px);
-            padding: 0.75rem 1rem;
-            border-radius: 2rem;
+            padding: 0.7rem 1rem;
+            border-radius: 1.8rem;
             display: flex;
             align-items: center;
             gap: 0.7rem;
@@ -287,20 +281,20 @@
             border-left: 4px solid;
         }
         .dynamic-message.error {
-            border-left-color: #FF6B6B;
-            color: #FFC9C9;
+            border-left-color: #C66B6B;
+            color: #FFD8D8;
         }
         .dynamic-message.success {
-            border-left-color: #6FCF97;
-            color: #D0F0DC;
+            border-left-color: #7FAA7A;
+            color: #DAF0D6;
         }
         .dynamic-message i {
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
         @keyframes slideMsg {
             from {
                 opacity: 0;
-                transform: translateY(-10px);
+                transform: translateY(-8px);
             }
             to {
                 opacity: 1;
@@ -312,13 +306,13 @@
         .demo-hint {
             text-align: center;
             margin-top: 1.6rem;
-            font-size: 0.75rem;
-            color: #98A9C7;
+            font-size: 0.7rem;
+            color: #7A89A8;
             background: rgba(0,0,0,0.3);
             width: fit-content;
             margin-left: auto;
             margin-right: auto;
-            padding: 0.4rem 1rem;
+            padding: 0.3rem 1rem;
             border-radius: 50px;
             backdrop-filter: blur(2px);
         }
@@ -329,14 +323,14 @@
 
         /* shake dinamico para error */
         .shake-effect {
-            animation: shakeBox 0.4 cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+            animation: shakeBox 0.4s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
         }
         @keyframes shakeBox {
             0%, 100% { transform: translateX(0); }
-            20% { transform: translateX(-6px); }
-            40% { transform: translateX(6px); }
-            60% { transform: translateX(-3px); }
-            80% { transform: translateX(3px); }
+            20% { transform: translateX(-5px); }
+            40% { transform: translateX(5px); }
+            60% { transform: translateX(-2px); }
+            80% { transform: translateX(2px); }
         }
 
         /* responsiveness */
@@ -345,7 +339,7 @@
                 padding: 1.8rem 1.5rem 2rem;
             }
             .hotel-brand h2 {
-                font-size: 1.6rem;
+                font-size: 1.7rem;
             }
         }
     </style>
@@ -354,11 +348,9 @@
     <div class="login-wrapper">
         <div class="login-card">
             <div class="hotel-brand">
-                <div class="icon-hotel">
-                    <i class="fas fa-building"></i>
-                </div>
-                <h2>Hotel Éclat</h2>
-                <p>Acceso exclusivo · Gestión integral</p>
+                <!-- Icono eliminado por solicitud -->
+                <h2>Hotel Mour</h2>
+                <p>Acceso corporativo · Gestión ejecutiva</p>
             </div>
 
             <form id="form-login" novalidate>
@@ -410,20 +402,18 @@
             const emailFieldDiv = document.getElementById('email-field');
             const passwordFieldDiv = document.getElementById('password-field');
 
-            // Credenciales válidas (Hotel)
+            // Credenciales válidas (Hotel Mour)
             const VALID_EMAIL = "admin@hotel.com";
             const VALID_PASSWORD = "123456";
 
             // ----- Funciones auxiliares UI dinámica -----
             function showMessage(message, type = 'error') {
-                // Limpiar área con animación previa
                 messageArea.innerHTML = '';
                 const msgDiv = document.createElement('div');
                 msgDiv.className = `dynamic-message ${type}`;
                 const icon = type === 'success' ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-exclamation-triangle"></i>';
                 msgDiv.innerHTML = `${icon} <span>${message}</span>`;
                 messageArea.appendChild(msgDiv);
-                // Auto desaparecer si es éxito después de 2.5 segundos (pero se queda hasta próximo intento, suave)
                 if (type === 'success') {
                     setTimeout(() => {
                         if (messageArea.firstChild === msgDiv) {
@@ -442,7 +432,6 @@
                 }
             }
 
-            // shake para el card o el campo? Añadimos efecto al card más sutil
             function shakeCard() {
                 const card = document.querySelector('.login-card');
                 card.classList.add('shake-effect');
@@ -451,7 +440,6 @@
                 }, 400);
             }
 
-            // Focus dinámico para bordes brillantes
             function setupInputFocus() {
                 const inputs = [emailInput, passwordInput];
                 const fields = [emailFieldDiv, passwordFieldDiv];
@@ -465,14 +453,12 @@
                 });
             }
 
-            // Toggle mostrar/ocultar contraseña con ícono dinámico
             function setupPasswordToggle() {
                 if (toggleIcon) {
                     toggleIcon.addEventListener('click', function(e) {
                         e.preventDefault();
                         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                         passwordInput.setAttribute('type', type);
-                        // cambiar icono
                         if (type === 'text') {
                             toggleIcon.classList.remove('fa-eye-slash');
                             toggleIcon.classList.add('fa-eye');
@@ -484,7 +470,6 @@
                 }
             }
 
-            // Mostrar estado de carga en botón (dinámico)
             function setLoadingState(isLoading) {
                 if (isLoading) {
                     loginBtn.classList.add('loading');
@@ -504,15 +489,12 @@
                 }
             }
 
-            // Lógica de autenticación + dinámica (recordar simple demo)
             function authenticate(email, password) {
-                // eliminar espacios
                 const cleanEmail = email.trim().toLowerCase();
                 const cleanPassword = password;
                 return (cleanEmail === VALID_EMAIL && cleanPassword === VALID_PASSWORD);
             }
 
-            // recordar campos si hay check "recordar" (simular guardar en localStorage)
             function saveRememberMe() {
                 if (rememberCheck.checked) {
                     localStorage.setItem('rememberEmail', emailInput.value.trim());
@@ -536,7 +518,6 @@
                 }
             }
 
-            // submit principal con modernidad y microinteracción
             async function handleSubmit(e) {
                 e.preventDefault();
                 clearMessage();
@@ -544,11 +525,9 @@
                 const email = emailInput.value;
                 const password = passwordInput.value;
 
-                // Validación visual de campos vacíos
                 if (!email.trim() || !password.trim()) {
                     showMessage('❌ Por favor, completa ambos campos.', 'error');
                     shakeCard();
-                    // animación extra en campos vacíos
                     if (!email.trim()) emailFieldDiv.style.transform = 'scale(0.99)';
                     if (!password.trim()) passwordFieldDiv.style.transform = 'scale(0.99)';
                     setTimeout(() => {
@@ -558,7 +537,6 @@
                     return;
                 }
 
-                // validación formato email simple
                 const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
                 if (!emailRegex.test(email)) {
                     showMessage('📧 Formato de correo inválido', 'error');
@@ -566,109 +544,78 @@
                     return;
                 }
 
-                // Iniciamos estado "cargando" - dinamismo
                 setLoadingState(true);
-                
-                // Simulamos pequeña petición asíncrona para dar sensación real (230ms)
                 await new Promise(resolve => setTimeout(resolve, 480));
                 
                 const isAuth = authenticate(email, password);
                 
                 if (isAuth) {
-                    // Guardar recordatorio si checkbox activo
                     saveRememberMe();
-                    // mensaje exitoso moderno
                     showMessage(`✨ Bienvenido, administrador. Redirigiendo al panel...`, 'success');
-                    
-                    // Efecto de éxito: deshabilitar botón momentáneamente, limpiar loading
                     setLoadingState(false);
                     loginBtn.disabled = true;
                     loginBtn.style.opacity = '0.7';
-                    
-                    // Opcional: cambio visual del botón a éxito
                     const originalBtnHTML = loginBtn.innerHTML;
                     loginBtn.innerHTML = `<i class="fas fa-check-circle"></i> Acceso concedido`;
                     
-                    // Dinamismo extra: redirigir después de un breve momento (simulación dashboard)
                     setTimeout(() => {
-                        // Crear elemento de notificación emergente extra (puramente estético)
-                        // Opcional: alerta de que es demo, pero más elegante: mostrar modal simulado?
-                        // Como no tenemos dashboard real, mostramos un modal de bienvenida y mantenemos el login
-                        // podríamos cambiar el card a un mensaje, pero mejor enviamos un toast extra y reseteamos el botón
-                        // para que el usuario no quede en loop, pero se considera un login exitoso.
-                        // Realmente se espera que en producción redirija, aquí mostramos éxito y reiniciamos botón.
                         loginBtn.disabled = false;
                         loginBtn.style.opacity = '1';
                         loginBtn.innerHTML = originalBtnHTML;
-                        // Mensaje de bienvenida adicional elegante
                         showMessage('🚀 Acceso autorizado · Panel de administración cargado.', 'success');
-                        // Pequeña confetti virtual? (solo para dinamismo)
                         createConfettiEffect();
-                        // Limpiar loading residual si lo hubiera
                         setLoadingState(false);
-                        // Podríamos resetear el formulario pero no necesario.
-                        // adicional: guardar un flag en sessionStorage.
                         sessionStorage.setItem('auth_success', 'true');
-                        // Podemos redirigir a dashboard simulado? pero sería mejor mostrar que funciona.
-                        // por modernidad, mostramos un overlay de exito, sin recargar.
                     }, 1300);
                 } else {
                     setLoadingState(false);
-                    showMessage('🔒 Acceso denegado. Correo o contraseña incorrectos.', 'error');
+                    showMessage('🔒 Acceso denegado. Credenciales incorrectas.', 'error');
                     shakeCard();
-                    // Efecto de resplandor rojo en campos
-                    emailFieldDiv.style.borderColor = '#FF6B6B';
-                    passwordFieldDiv.style.borderColor = '#FF6B6B';
+                    emailFieldDiv.style.borderColor = '#C66B6B';
+                    passwordFieldDiv.style.borderColor = '#C66B6B';
                     setTimeout(() => {
                         emailFieldDiv.style.borderColor = '';
                         passwordFieldDiv.style.borderColor = '';
                     }, 500);
-                    // Limpiar contraseña por seguridad? No, solo dinámica visual
                     passwordInput.value = '';
                 }
             }
 
-            // efecto confeti discreto (muy moderno)
             function createConfettiEffect() {
-                const confettiCount = 40;
+                const confettiCount = 35;
                 for (let i = 0; i < confettiCount; i++) {
                     const conf = document.createElement('div');
                     conf.style.position = 'fixed';
-                    conf.style.width = '8px';
-                    conf.style.height = '8px';
-                    conf.style.backgroundColor = `hsl(${Math.random() * 60 + 30}, 85%, 60%)`;
-                    conf.style.borderRadius = '50%';
+                    conf.style.width = '6px';
+                    conf.style.height = '6px';
+                    conf.style.backgroundColor = `hsl(${Math.random() * 60 + 30}, 70%, 55%)`;
+                    conf.style.borderRadius = '2px';
                     conf.style.left = Math.random() * window.innerWidth + 'px';
                     conf.style.top = '-10px';
-                    conf.style.opacity = '0.8';
+                    conf.style.opacity = '0.7';
                     conf.style.pointerEvents = 'none';
                     conf.style.zIndex = '9999';
                     document.body.appendChild(conf);
-                    const duration = 800 + Math.random() * 500;
+                    const duration = 700 + Math.random() * 600;
                     const destination = window.innerHeight - 50;
                     conf.animate([
-                        { transform: `translateY(0px) rotate(0deg)`, opacity: 0.9 },
+                        { transform: `translateY(0px) rotate(0deg)`, opacity: 0.8 },
                         { transform: `translateY(${destination}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
                     ], { duration: duration, easing: 'cubic-bezier(0.2,0.9,0.4,1)' });
                     setTimeout(() => conf.remove(), duration);
                 }
             }
 
-            // efecto de olvidé contraseña con mensaje informativo (demo)
             function setupForgotLink() {
                 const forgotLink = document.getElementById('forgotMock');
                 if (forgotLink) {
                     forgotLink.addEventListener('click', (e) => {
                         e.preventDefault();
-                        showMessage('🔐 Restablecimiento: contacta con soporte@hoteleclat.com o usa demo: admin@hotel.com / 123456', 'error');
-                        // animación suave
-                        const msgDiv = document.querySelector('.dynamic-message');
-                        if (msgDiv) msgDiv.style.backgroundColor = 'rgba(0,0,0,0.8)';
+                        showMessage('🔐 Restablecimiento: contacte con soporte@hotelmour.com o use demo: admin@hotel.com / 123456', 'error');
                     });
                 }
             }
 
-            // realtime validación dinámica mientras escribe (limpiar mensaje error al escribir)
             function setupLiveValidation() {
                 const clearErrorOnInput = () => {
                     clearMessage();
@@ -679,28 +626,19 @@
                 passwordInput.addEventListener('input', clearErrorOnInput);
             }
 
-            // carga de recordar usuario y prellenado
             loadRememberMe();
-
-            // Agregar eventos y listeners modernos
             form.addEventListener('submit', handleSubmit);
             setupInputFocus();
             setupPasswordToggle();
             setupForgotLink();
             setupLiveValidation();
 
-            // efecto dinámico extra: si el usuario hace clic en el botón y campos llenos, hover dinámico
-            // Prevenir submit multiple con flag adicional (ya con loading)
-            // Gestión de animación de fondo: partículas suaves existentes.
-            // adicional: efecto de bienvenida al cargar
             setTimeout(() => {
                 const hintMsg = document.querySelector('.demo-hint');
                 if (hintMsg) hintMsg.style.opacity = '0.9';
             }, 200);
             
-            // Si hubiera estado autenticado previamente con sessionstorage (solo demo para flujo)
             if (sessionStorage.getItem('auth_success') === 'true') {
-                // mostrar mensaje sutil de bienvenida previa (limpiar después)
                 setTimeout(() => {
                     showMessage('🛎️ Sesión previa activa · Bienvenido de nuevo', 'success');
                     sessionStorage.removeItem('auth_success');
