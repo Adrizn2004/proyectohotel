@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Hotel Mour | Contacto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter', sans-serif; background:#f0f4f8; color:#1e2a3e; line-height:1.5; }
+        .app-wrapper { max-width:1100px; margin:0 auto; padding:1.5rem 2rem; }
+        .hotel-header { background:white; border-radius:1.5rem; padding:1.25rem 1.8rem; margin-bottom:2rem; box-shadow:0 8px 20px rgba(0,0,0,0.03); }
+        .logo-row { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; margin-bottom:1.2rem; border-bottom:1px solid #e9edf2; padding-bottom:0.8rem; }
+        .hotel-name h1 { font-size:1.9rem; font-weight:700; background:linear-gradient(135deg,#1e4a6e,#2c7da0); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        .user-actions { display:flex; gap:1.2rem; align-items:center; }
+        .user-actions a { text-decoration:none; color:#2c7da0; font-weight:500; font-size:0.9rem; }
+        .user-actions a:hover { color:#0f3b4f; text-decoration:underline; }
+        .nav-links { display:flex; gap:1.8rem; flex-wrap:wrap; }
+        .nav-links a { text-decoration:none; font-weight:600; color:#2c3e50; font-size:0.95rem; display:inline-flex; align-items:center; gap:6px; }
+        .nav-links a i { color:#2c7da0; }
+        .nav-links a:hover { color:#1e6f8f; }
+        .layout { display:flex; gap:1.5rem; flex-wrap:wrap; }
+        .card { background:white; border-radius:1.5rem; padding:1.8rem 2rem; box-shadow:0 4px 12px rgba(0,0,0,0.03); }
+        .page-title h2 { font-size:1.6rem; font-weight:700; color:#0f2b3b; margin-bottom:0.4rem; display:flex; align-items:center; gap:10px; }
+        .page-title p { color:#5c6f87; font-size:0.85rem; margin-bottom:1.4rem; }
+        .info-card { flex:1; min-width:260px; }
+        .contact-item { display:flex; gap:1rem; align-items:flex-start; margin-bottom:1.3rem; }
+        .contact-item i { background:#e7f1f8; color:#2c7da0; width:42px; height:42px; border-radius:0.9rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .contact-item strong { display:block; font-size:0.9rem; color:#0f2b3b; }
+        .contact-item span { font-size:0.85rem; color:#5c6f87; }
+        .form-card { flex:1.4; min-width:280px; }
+        .form-group { margin-bottom:1.1rem; }
+        .form-group label { display:block; font-weight:600; font-size:0.85rem; margin-bottom:0.5rem; color:#1f3b44; }
+        .form-group input, .form-group textarea {
+            width:100%; padding:0.8rem 1rem; border:1px solid #cbd5e1; border-radius:1rem; font-size:0.9rem;
+            font-family:inherit; resize:vertical;
+        }
+        .form-group input:focus, .form-group textarea:focus { outline:none; border-color:#2c7da0; box-shadow:0 0 0 3px rgba(44,125,160,0.15); }
+        .btn-primary { background:#2c7da0; color:white; border:none; padding:0.7rem 1.8rem; border-radius:50px; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:8px; }
+        .btn-primary:hover { background:#1f5e7a; }
+        .dynamic-msg { margin-top:1rem; padding:0.8rem 1.2rem; border-radius:1rem; font-size:0.85rem; font-weight:500; border-left:4px solid #2b8c7a; background:#e9f3ef; color:#1e6f5c; display:flex; align-items:center; gap:8px; }
+        @media (max-width:680px) { .app-wrapper { padding:1rem; } .logo-row { flex-direction:column; align-items:flex-start; gap:0.8rem; } }
+    </style>
+</head>
+<body>
+<div class="app-wrapper">
+    <div class="hotel-header">
+        <div class="logo-row">
+            <div class="hotel-name"><h1><i class="fas fa-umbrella-beach"></i> Hotel Mour</h1></div>
+            <div class="user-actions">
+                <a href="cuenta.html"><i class="fas fa-user-circle"></i> Mi Cuenta</a>
+                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="cliente.html"><i class="fas fa-bed"></i> Habitaciones</a>
+            <a href="mis-reservas.html"><i class="fas fa-calendar-alt"></i> Mis Reservas</a>
+            <a href="soporte.html"><i class="fas fa-headset"></i> Soporte</a>
+            <a href="servicios.html"><i class="fas fa-concierge-bell"></i> Servicios</a>
+        </div>
+    </div>
+
+    <div class="layout">
+        <div class="card info-card">
+            <div class="page-title"><h2><i class="fas fa-phone" style="color:#2c7da0;"></i> Contáctanos</h2><p>Estamos para ayudarte en lo que necesites</p></div>
+            <div class="contact-item"><i class="fas fa-location-dot"></i><div><strong>Dirección</strong><span>Av. Costanera 123, Santa Marta, Colombia</span></div></div>
+            <div class="contact-item"><i class="fas fa-phone"></i><div><strong>Teléfono</strong><span>+57 (1) 555-0199</span></div></div>
+            <div class="contact-item"><i class="fas fa-envelope"></i><div><strong>Correo</strong><span>contacto@hotelmour.com</span></div></div>
+            <div class="contact-item"><i class="fas fa-clock"></i><div><strong>Horario de atención</strong><span>Todos los días, 7:00 a.m. – 9:00 p.m.</span></div></div>
+        </div>
+
+        <div class="card form-card">
+            <div class="page-title"><h2><i class="fas fa-paper-plane" style="color:#2b8c7a;"></i> Envíanos un mensaje</h2><p>Te responderemos al correo que indiques</p></div>
+            <form id="formContacto">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" placeholder="Tu nombre completo" required>
+                </div>
+                <div class="form-group">
+                    <label for="correoContacto">Correo</label>
+                    <input type="email" id="correoContacto" placeholder="tu@correo.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="mensajeContacto">Mensaje</label>
+                    <textarea id="mensajeContacto" rows="4" placeholder="¿En qué podemos ayudarte?" required></textarea>
+                </div>
+                <button type="submit" class="btn-primary"><i class="fas fa-paper-plane"></i> Enviar mensaje</button>
+                <div id="msgArea"></div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const correo = sessionStorage.getItem('usuario_correo');
+    if (!correo) window.location.href = '../index.html';
+    document.getElementById('correoContacto').value = correo || '';
+
+    document.getElementById('formContacto').addEventListener('submit', function(e) {
+        e.preventDefault();
+        document.getElementById('msgArea').innerHTML = `
+            <div class="dynamic-msg"><i class="fas fa-check-circle"></i> ¡Gracias! Hemos recibido tu mensaje y te responderemos pronto.</div>`;
+        this.reset();
+        document.getElementById('correoContacto').value = correo || '';
+    });
+
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        sessionStorage.clear();
+        window.location.href = '../index.html';
+    });
+</script>
+</body>
+</html>

@@ -398,6 +398,9 @@
             <div class="demo-hint">
                 <i class="fas fa-hotel"></i> Demo: admin@hotel.com / 123456
             </div>
+            <div class="demo-hint" style="margin-top: 0.6rem;">
+                <i class="fas fa-user-plus"></i> ¿No tienes cuenta? <a href="registro.html" style="color:#C6AE6B; text-decoration:none; font-weight:600;">Regístrate aquí</a>
+            </div>
         </div>
     </div>
 
@@ -414,9 +417,6 @@
             const emailFieldDiv = document.getElementById('email-field');
             const passwordFieldDiv = document.getElementById('password-field');
 
-            // Credenciales válidas (Hotel Mour)
-            const VALID_EMAIL = "admin@hotel.com";
-            const VALID_PASSWORD = "123456";
 
             // ----- Funciones auxiliares UI dinámica -----
             function showMessage(message, type = 'error') {
@@ -501,10 +501,22 @@
                 }
             }
 
-            function authenticate(email, password) {
+            async function authenticate(email, password) {
                 const cleanEmail = email.trim().toLowerCase();
-                const cleanPassword = password;
-                return (cleanEmail === VALID_EMAIL && cleanPassword === VALID_PASSWORD);
+                try {
+                    const respuesta = await fetch('http://localhost:5000/api/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ correo: cleanEmail, contrasena: password })
+                    });
+                    const resultado = await respuesta.json();
+                    if (resultado.estado === 'exito') {
+                        return { ok: true, redireccion: resultado.redireccion, usuario: resultado.usuario };
+                    }
+                    return { ok: false, mensaje: resultado.mensaje || 'Credenciales inválidas' };
+                } catch (err) {
+                    return { ok: false, mensaje: 'No se pudo conectar con el servidor. Intenta nuevamente.' };
+                }
             }
 
             function saveRememberMe() {
@@ -557,31 +569,30 @@
                 }
 
                 setLoadingState(true);
-                await new Promise(resolve => setTimeout(resolve, 480));
-                
-                const isAuth = authenticate(email, password);
-                
-                if (isAuth) {
+
+                const resultado = await authenticate(email, password);
+
+                if (resultado.ok) {
                     saveRememberMe();
-                    showMessage(`✨ Bienvenido, administrador. Redirigiendo al panel...`, 'success');
+                    sessionStorage.setItem('usuario_correo', resultado.usuario.correo);
+                    sessionStorage.setItem('usuario_rol', resultado.usuario.rol);
+                    sessionStorage.setItem('usuario_id', resultado.usuario.id_usuario);
+
+                    const esAdmin = resultado.usuario.rol === 'administrador';
+                    showMessage(`✨ Bienvenido${esAdmin ? ', administrador' : ''}. Redirigiendo...`, 'success');
                     setLoadingState(false);
                     loginBtn.disabled = true;
                     loginBtn.style.opacity = '0.7';
-                    const originalBtnHTML = loginBtn.innerHTML;
                     loginBtn.innerHTML = `<i class="fas fa-check-circle"></i> Acceso concedido`;
-                    
+
                     setTimeout(() => {
-                        loginBtn.disabled = false;
-                        loginBtn.style.opacity = '1';
-                        loginBtn.innerHTML = originalBtnHTML;
-                        showMessage('🚀 Acceso autorizado · Panel de administración cargado.', 'success');
-                        createConfettiEffect();
-                        setLoadingState(false);
+                        if (esAdmin) createConfettiEffect();
                         sessionStorage.setItem('auth_success', 'true');
-                    }, 1300);
+                        window.location.href = resultado.redireccion;
+                    }, 1100);
                 } else {
                     setLoadingState(false);
-                    showMessage('🔒 Acceso denegado. Credenciales incorrectas.', 'error');
+                    showMessage(`🔒 ${resultado.mensaje}`, 'error');
                     shakeCard();
                     emailFieldDiv.style.borderColor = '#C66B6B';
                     passwordFieldDiv.style.borderColor = '#C66B6B';

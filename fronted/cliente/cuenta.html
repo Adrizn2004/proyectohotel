@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Hotel Mour | Mi Cuenta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter', sans-serif; background:#f0f4f8; color:#1e2a3e; line-height:1.5; }
+        .app-wrapper { max-width:1100px; margin:0 auto; padding:1.5rem 2rem; }
+        .hotel-header { background:white; border-radius:1.5rem; padding:1.25rem 1.8rem; margin-bottom:2rem; box-shadow:0 8px 20px rgba(0,0,0,0.03); }
+        .logo-row { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; margin-bottom:1.2rem; border-bottom:1px solid #e9edf2; padding-bottom:0.8rem; }
+        .hotel-name h1 { font-size:1.9rem; font-weight:700; background:linear-gradient(135deg,#1e4a6e,#2c7da0); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        .user-actions { display:flex; gap:1.2rem; align-items:center; }
+        .user-actions a { text-decoration:none; color:#2c7da0; font-weight:500; font-size:0.9rem; }
+        .user-actions a:hover { color:#0f3b4f; text-decoration:underline; }
+        .user-actions a.active { color:#0f3b4f; font-weight:700; }
+        .nav-links { display:flex; gap:1.8rem; flex-wrap:wrap; }
+        .nav-links a { text-decoration:none; font-weight:600; color:#2c3e50; font-size:0.95rem; display:inline-flex; align-items:center; gap:6px; }
+        .nav-links a i { color:#2c7da0; }
+        .nav-links a:hover { color:#1e6f8f; }
+        .card { background:white; border-radius:1.5rem; padding:1.8rem 2rem; box-shadow:0 4px 12px rgba(0,0,0,0.03); margin-bottom:1.5rem; }
+        .page-title h2 { font-size:1.6rem; font-weight:700; color:#0f2b3b; margin-bottom:0.4rem; display:flex; align-items:center; gap:10px; }
+        .page-title p { color:#5c6f87; font-size:0.85rem; }
+        .profile-row { display:flex; align-items:center; gap:1.5rem; margin-bottom:1.5rem; flex-wrap:wrap; }
+        .avatar { width:72px; height:72px; border-radius:50%; background:linear-gradient(135deg,#2c7da0,#1a4b6e); display:flex; align-items:center; justify-content:center; color:white; font-size:1.8rem; }
+        .info-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1.2rem; margin-top:0.5rem; }
+        .info-item { background:#f8fafd; border-radius:1rem; padding:1rem 1.2rem; border:1px solid #edf2f7; }
+        .info-item span { display:block; font-size:0.75rem; color:#7a99aa; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:4px; }
+        .info-item strong { font-size:1rem; color:#1f3b44; }
+        .badge-rol { background:#e9f3ef; color:#1e6f5c; padding:3px 12px; border-radius:50px; font-size:0.75rem; font-weight:600; display:inline-block; }
+        .danger-zone { border-top:1px solid #edf2f7; margin-top:1.5rem; padding-top:1.5rem; }
+        .btn-logout { background:#fef2e8; border:1px solid #ffdec5; color:#bc6f2c; padding:0.6rem 1.4rem; border-radius:40px; font-weight:600; font-size:0.85rem; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:0.2s; }
+        .btn-logout:hover { background:#ffe2d0; color:#9b551c; }
+        @media (max-width:680px) {
+            .app-wrapper { padding:1rem; }
+            .logo-row { flex-direction:column; align-items:flex-start; gap:0.8rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-wrapper">
+    <div class="hotel-header">
+        <div class="logo-row">
+            <div class="hotel-name"><h1><i class="fas fa-umbrella-beach"></i> Hotel Mour</h1></div>
+            <div class="user-actions">
+                <a href="cuenta.html" class="active"><i class="fas fa-user-circle"></i> Mi Cuenta</a>
+                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="cliente.html"><i class="fas fa-bed"></i> Habitaciones</a>
+            <a href="mis-reservas.html"><i class="fas fa-calendar-alt"></i> Mis Reservas</a>
+            <a href="soporte.html"><i class="fas fa-headset"></i> Soporte</a>
+            <a href="servicios.html"><i class="fas fa-concierge-bell"></i> Servicios</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="page-title"><h2><i class="fas fa-user-circle" style="color:#2c7da0;"></i> Mi Cuenta</h2><p>Información de tu perfil en Hotel Mour</p></div>
+
+        <div class="profile-row">
+            <div class="avatar"><i class="fas fa-user"></i></div>
+            <div>
+                <strong id="correoDisplay" style="font-size:1.2rem; color:#1f3b44;">—</strong>
+                <div style="margin-top:6px;"><span class="badge-rol" id="rolDisplay">cliente</span></div>
+            </div>
+        </div>
+
+        <div class="info-grid">
+            <div class="info-item"><span>Correo electrónico</span><strong id="infoCorreo">—</strong></div>
+            <div class="info-item"><span>Tipo de cuenta</span><strong id="infoRol">—</strong></div>
+            <div class="info-item"><span>ID de usuario</span><strong id="infoId">—</strong></div>
+            <div class="info-item"><span>Estado</span><strong style="color:#1e6f5c;"><i class="fas fa-circle" style="font-size:0.6rem;"></i> Activa</strong></div>
+        </div>
+
+        <div class="danger-zone">
+            <button class="btn-logout" id="btnLogoutCard"><i class="fas fa-sign-out-alt"></i> Cerrar sesión en este dispositivo</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const correo = sessionStorage.getItem('usuario_correo');
+    const rol = sessionStorage.getItem('usuario_rol') || 'cliente';
+    const id = sessionStorage.getItem('usuario_id') || '—';
+
+    if (!correo) {
+        window.location.href = '../index.html';
+    } else {
+        document.getElementById('correoDisplay').textContent = correo;
+        document.getElementById('rolDisplay').textContent = rol;
+        document.getElementById('infoCorreo').textContent = correo;
+        document.getElementById('infoRol').textContent = rol === 'administrador' ? 'Administrador' : 'Cliente';
+        document.getElementById('infoId').textContent = id;
+    }
+
+    function cerrarSesion(e) {
+        e.preventDefault();
+        sessionStorage.clear();
+        window.location.href = '../index.html';
+    }
+    document.getElementById('logoutBtn').addEventListener('click', cerrarSesion);
+    document.getElementById('btnLogoutCard').addEventListener('click', cerrarSesion);
+</script>
+</body>
+</html>

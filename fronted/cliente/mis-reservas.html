@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Hotel Mour | Mis Reservas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter', sans-serif; background:#f0f4f8; color:#1e2a3e; line-height:1.5; }
+        .app-wrapper { max-width:1200px; margin:0 auto; padding:1.5rem 2rem; }
+        .hotel-header { background:white; border-radius:1.5rem; padding:1.25rem 1.8rem; margin-bottom:2rem; box-shadow:0 8px 20px rgba(0,0,0,0.03); }
+        .logo-row { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; margin-bottom:1.2rem; border-bottom:1px solid #e9edf2; padding-bottom:0.8rem; }
+        .hotel-name h1 { font-size:1.9rem; font-weight:700; background:linear-gradient(135deg,#1e4a6e,#2c7da0); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        .user-actions { display:flex; gap:1.2rem; align-items:center; }
+        .user-actions a { text-decoration:none; color:#2c7da0; font-weight:500; font-size:0.9rem; }
+        .user-actions a:hover { color:#0f3b4f; text-decoration:underline; }
+        .nav-links { display:flex; gap:1.8rem; flex-wrap:wrap; }
+        .nav-links a { text-decoration:none; font-weight:600; color:#2c3e50; font-size:0.95rem; display:inline-flex; align-items:center; gap:6px; }
+        .nav-links a.active { color:#1e6f8f; border-bottom:2px solid #2c7da0; padding-bottom:4px; }
+        .nav-links a i { color:#2c7da0; }
+        .nav-links a:hover { color:#1e6f8f; }
+        .card { background:white; border-radius:1.5rem; padding:1.8rem 2rem; box-shadow:0 4px 12px rgba(0,0,0,0.03); }
+        .page-title h2 { font-size:1.6rem; font-weight:700; color:#0f2b3b; margin-bottom:0.4rem; display:flex; align-items:center; gap:10px; }
+        .page-title p { color:#5c6f87; font-size:0.85rem; margin-bottom:1.5rem; }
+        .table-wrapper { overflow-x:auto; border-radius:1.2rem; border:1px solid #edf2f7; }
+        table { width:100%; border-collapse:collapse; font-size:0.9rem; min-width:640px; }
+        th { text-align:left; padding:1rem 1.2rem; background:#f8fafd; font-weight:600; color:#1c5c66; border-bottom:1px solid #e2e9f0; font-size:0.85rem; }
+        td { padding:1rem 1.2rem; border-bottom:1px solid #eff3f8; color:#1f3b44; }
+        tr:last-child td { border-bottom:none; }
+        .room-badge { background:#e9f3ef; color:#1e6f5c; padding:4px 12px; border-radius:50px; font-weight:500; font-size:0.8rem; }
+        .price-cell { font-weight:700; color:#0f5b7a; }
+        .empty-state, .loading-state, .error-state { text-align:center; padding:3rem 1rem; color:#5c6f87; }
+        .empty-state i, .loading-state i, .error-state i { font-size:2.2rem; margin-bottom:0.8rem; display:block; color:#9ab0c0; }
+        .error-state i { color:#c66b6b; }
+        .btn-retry { margin-top:1rem; background:#2c7da0; color:white; border:none; padding:0.5rem 1.4rem; border-radius:40px; font-weight:600; cursor:pointer; }
+        @media (max-width:680px) { .app-wrapper { padding:1rem; } .logo-row { flex-direction:column; align-items:flex-start; gap:0.8rem; } }
+    </style>
+</head>
+<body>
+<div class="app-wrapper">
+    <div class="hotel-header">
+        <div class="logo-row">
+            <div class="hotel-name"><h1><i class="fas fa-umbrella-beach"></i> Hotel Mour</h1></div>
+            <div class="user-actions">
+                <a href="cuenta.html"><i class="fas fa-user-circle"></i> Mi Cuenta</a>
+                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="cliente.html"><i class="fas fa-bed"></i> Habitaciones</a>
+            <a href="mis-reservas.html" class="active"><i class="fas fa-calendar-alt"></i> Mis Reservas</a>
+            <a href="soporte.html"><i class="fas fa-headset"></i> Soporte</a>
+            <a href="servicios.html"><i class="fas fa-concierge-bell"></i> Servicios</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="page-title">
+            <h2><i class="fas fa-calendar-alt" style="color:#2c7da0;"></i> Mis Reservas</h2>
+            <p>Historial de reservas asociadas a tu cuenta</p>
+        </div>
+        <div id="contenido">
+            <div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Cargando tus reservas...</div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const correo = sessionStorage.getItem('usuario_correo');
+    if (!correo) window.location.href = '../index.html';
+
+    const contenido = document.getElementById('contenido');
+
+    function formatearFecha(fecha) {
+        if (!fecha) return '—';
+        const d = new Date(fecha);
+        if (isNaN(d)) return fecha;
+        return d.toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    }
+
+    async function cargarReservas() {
+        contenido.innerHTML = '<div class="loading-state"><i class="fas fa-spinner fa-spin"></i> Cargando tus reservas...</div>';
+        try {
+            const resp = await fetch(`http://localhost:5000/api/reservas/mias?correo=${encodeURIComponent(correo)}`);
+            if (!resp.ok) throw new Error('Respuesta no válida del servidor');
+            const reservas = await resp.json();
+
+            if (!reservas.length) {
+                contenido.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-xmark"></i>
+                        Aún no tienes reservas registradas.<br>
+                        <a href="cliente.html" style="color:#2c7da0; font-weight:600; text-decoration:none;">Explora habitaciones disponibles &rarr;</a>
+                    </div>`;
+                return;
+            }
+
+            const filas = reservas.map(r => `
+                <tr>
+                    <td><strong>#${r.id_reserva}</strong></td>
+                    <td><span class="room-badge"><i class="fas fa-door-open"></i> ${r.habitacion}</span></td>
+                    <td><i class="fas fa-calendar-alt" style="color:#7899aa; margin-right:6px;"></i>${formatearFecha(r.fecha_ingreso)}</td>
+                    <td><i class="fas fa-calendar-check" style="color:#7899aa; margin-right:6px;"></i>${formatearFecha(r.fecha_salida)}</td>
+                    <td class="price-cell">$${Number(r.precio_unitario).toFixed(2)} / noche</td>
+                </tr>
+            `).join('');
+
+            contenido.innerHTML = `
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th>ID Reserva</th><th>Habitación</th><th>Check-In</th><th>Check-Out</th><th>Precio</th></tr>
+                        </thead>
+                        <tbody>${filas}</tbody>
+                    </table>
+                </div>`;
+        } catch (err) {
+            contenido.innerHTML = `
+                <div class="error-state">
+                    <i class="fas fa-triangle-exclamation"></i>
+                    No se pudieron cargar tus reservas. Verifica que el servidor esté activo.
+                    <br><button class="btn-retry" id="retryBtn"><i class="fas fa-rotate-right"></i> Reintentar</button>
+                </div>`;
+            document.getElementById('retryBtn').addEventListener('click', cargarReservas);
+        }
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        sessionStorage.clear();
+        window.location.href = '../index.html';
+    });
+
+    cargarReservas();
+</script>
+</body>
+</html>

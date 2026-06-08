@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Hotel Mour | Crear cuenta</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&family=Playfair+Display:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(145deg, #0A0F1C 0%, #12182B 50%, #1A1F32 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+        .login-wrapper { width: 100%; max-width: 520px; padding: 1.5rem; margin: 1rem; }
+        .login-card {
+            background: rgba(12, 18, 30, 0.75);
+            backdrop-filter: blur(18px);
+            border-radius: 2rem;
+            padding: 2.2rem 2rem 2.5rem;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.06);
+        }
+        .hotel-brand { text-align: center; margin-bottom: 2rem; }
+        .hotel-brand h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #F2F6FF, #C8D3EB);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+        .hotel-brand p { color: #8E9EBB; font-size: 0.85rem; letter-spacing: 0.4px; }
+        .input-group { margin-bottom: 1.6rem; }
+        .input-field {
+            display: flex; align-items: center;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 1.6rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.25s ease;
+        }
+        .input-field:focus-within {
+            border-color: #C6AE6B;
+            background: rgba(255, 255, 255, 0.09);
+            box-shadow: 0 0 0 3px rgba(198, 174, 107, 0.2);
+        }
+        .input-field i { padding-left: 1.2rem; font-size: 1.1rem; color: #9AABCA; width: 2.2rem; }
+        .input-field input {
+            background: transparent; border: none; padding: 1rem 0.8rem;
+            font-size: 0.95rem; width: 100%; color: #EDF2FB; font-weight: 500; outline: none;
+            font-family: 'Inter', sans-serif;
+        }
+        .input-field input::placeholder { color: rgba(140, 160, 190, 0.7); font-size: 0.85rem; }
+        .hint { color: #8E9EBB; font-size: 0.75rem; margin: -1.1rem 0 1.4rem 0.6rem; }
+        .submit-btn {
+            width: 100%; padding: 1rem 1.2rem; border-radius: 2.2rem; border: 1px solid rgba(198, 174, 107, 0.4);
+            background: linear-gradient(105deg, #2E384F, #1B2338);
+            color: #F2F6FF; font-weight: 700; font-size: 1.05rem; letter-spacing: 1.5px;
+            cursor: pointer; transition: all 0.3s ease; text-transform: uppercase;
+            display: flex; align-items: center; justify-content: center; gap: 12px;
+        }
+        .submit-btn:hover { background: linear-gradient(105deg, #3C4868, #252F48); transform: translateY(-2px); }
+        .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        .message-area { min-height: 52px; margin-top: 1.2rem; }
+        .dynamic-message {
+            background: rgba(0, 0, 0, 0.8); padding: 0.7rem 1rem; border-radius: 1.8rem;
+            display: flex; align-items: center; gap: 0.7rem; font-size: 0.85rem; font-weight: 500;
+            border-left: 4px solid;
+        }
+        .dynamic-message.error { border-left-color: #C66B6B; color: #FFD8D8; }
+        .dynamic-message.success { border-left-color: #8BBF8A; color: #DAF0D6; }
+        .back-link {
+            display: block; text-align: center; margin-top: 1.6rem; color: #C6AE6B;
+            font-size: 0.85rem; text-decoration: none; font-weight: 500;
+        }
+        .back-link:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="hotel-brand">
+                <h2>Hotel Mour</h2>
+                <p>Crea tu cuenta de cliente</p>
+            </div>
+
+            <form id="form-registro" novalidate>
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="correo" placeholder="Correo electrónico" autocomplete="email" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="contrasena" placeholder="Contraseña" autocomplete="new-password" required minlength="6">
+                    </div>
+                </div>
+                <p class="hint">Mínimo 6 caracteres.</p>
+
+                <div class="input-group">
+                    <div class="input-field">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="confirmar" placeholder="Confirmar contraseña" autocomplete="new-password" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn" id="registroBtn">
+                    <span>Crear cuenta</span>
+                    <i class="fas fa-user-plus"></i>
+                </button>
+
+                <div class="message-area" id="messageArea"></div>
+            </form>
+
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Volver al inicio de sesión</a>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('form-registro');
+        const correoInput = document.getElementById('correo');
+        const contrasenaInput = document.getElementById('contrasena');
+        const confirmarInput = document.getElementById('confirmar');
+        const registroBtn = document.getElementById('registroBtn');
+        const messageArea = document.getElementById('messageArea');
+
+        function showMessage(message, type = 'error') {
+            messageArea.innerHTML = '';
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `dynamic-message ${type}`;
+            const icon = type === 'success' ? '<i class="fas fa-check-circle"></i>' : '<i class="fas fa-exclamation-triangle"></i>';
+            msgDiv.innerHTML = `${icon} <span>${message}</span>`;
+            messageArea.appendChild(msgDiv);
+        }
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const correo = correoInput.value.trim().toLowerCase();
+            const contrasena = contrasenaInput.value;
+            const confirmar = confirmarInput.value;
+
+            const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
+            if (!emailRegex.test(correo)) {
+                showMessage('📧 Formato de correo inválido', 'error');
+                return;
+            }
+            if (contrasena.length < 6) {
+                showMessage('🔑 La contraseña debe tener al menos 6 caracteres', 'error');
+                return;
+            }
+            if (contrasena !== confirmar) {
+                showMessage('❌ Las contraseñas no coinciden', 'error');
+                return;
+            }
+
+            registroBtn.disabled = true;
+            registroBtn.innerHTML = '<span>Creando cuenta...</span>';
+
+            try {
+                const respuesta = await fetch('http://localhost:5000/api/registro', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ correo, contrasena })
+                });
+                const resultado = await respuesta.json();
+
+                if (resultado.estado === 'exito') {
+                    showMessage('✅ Cuenta creada. Redirigiendo al inicio de sesión...', 'success');
+                    setTimeout(() => { window.location.href = 'index.html'; }, 1400);
+                } else {
+                    showMessage(`🔒 ${resultado.mensaje}`, 'error');
+                    registroBtn.disabled = false;
+                    registroBtn.innerHTML = '<span>Crear cuenta</span><i class="fas fa-user-plus"></i>';
+                }
+            } catch (err) {
+                showMessage('⚠️ No se pudo conectar con el servidor. Intenta nuevamente.', 'error');
+                registroBtn.disabled = false;
+                registroBtn.innerHTML = '<span>Crear cuenta</span><i class="fas fa-user-plus"></i>';
+            }
+        });
+    </script>
+</body>
+</html>

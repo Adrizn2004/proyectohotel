@@ -11,7 +11,8 @@ CREATE TABLE usuarios (
 CREATE TABLE reservas (
     id_reserva INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
-    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_reservas_usuario FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
 );
 
 CREATE TABLE detalle_reservas (
@@ -20,7 +21,8 @@ CREATE TABLE detalle_reservas (
     habitacion VARCHAR(50) NOT NULL,
     fecha_ingreso DATE NOT NULL,
     fecha_salida DATE NOT NULL,
-    precio_unitario DECIMAL(10,2) NOT NULL
+    precio_unitario DECIMAL(10,2) NOT NULL,
+    CONSTRAINT fk_detalle_reserva FOREIGN KEY (id_reserva) REFERENCES reservas(id_reserva) ON DELETE CASCADE
 );
 
 -- Datos de prueba

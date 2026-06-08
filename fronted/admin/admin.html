@@ -386,7 +386,11 @@
                 const reservaId = btn.getAttribute('data-id');
                 const reserva = reservasData.find(r => r.id === reservaId);
                 if (reserva) {
-                    mostrarMensajeFlotante(`🔍 Ver detalles de ${reserva.id} — Cliente: ${reserva.cliente}, Habitación: ${reserva.habitacion}. Fechas: ${reserva.checkIn} al ${reserva.checkOut}.`);
+                    const url = new URLSearchParams({
+                        id: reserva.id, cliente: reserva.cliente, habitacion: reserva.habitacion,
+                        checkin: reserva.checkIn, checkout: reserva.checkOut
+                    }).toString();
+                    window.location.href = `reserva-detalle.html?${url}`;
                 } else {
                     mostrarMensajeFlotante(`Información de reserva no encontrada.`);
                 }
@@ -399,7 +403,11 @@
                 const reservaId = btn.getAttribute('data-id');
                 const reserva = reservasData.find(r => r.id === reservaId);
                 if (reserva) {
-                    mostrarMensajeFlotante(`✏️ Editar reserva ${reserva.id} — Cliente: ${reserva.cliente}. Funcionalidad de edición avanzada (demo).`);
+                    const url = new URLSearchParams({
+                        id: reserva.id, cliente: reserva.cliente, habitacion: reserva.habitacion,
+                        checkin: reserva.checkIn, checkout: reserva.checkOut
+                    }).toString();
+                    window.location.href = `reserva-editar.html?${url}`;
                 } else {
                     mostrarMensajeFlotante(`No se puede editar, reserva no válida.`);
                 }
@@ -425,40 +433,13 @@
         }, 3000);
     }
 
-    // Función para cerrar sesión (simulación)
+    // Función para cerrar sesión
     function cerrarSesion() {
         mostrarMensajeFlotante("🔒 Sesión cerrada correctamente. ¡Hasta pronto, Administrador!");
-        // Opcional: Redirigir a index.html o página de login (simulado)
         setTimeout(() => {
-            // Comportamiento real: se podría redirigir, pero respetamos demo sin recarga forzosa
-            // Mostramos un mensaje adicional y limpiamos el contexto visual (sin perder datos)
-            const container = document.querySelector('.dashboard-container');
-            if(container) {
-                // solo efecto visual simbólico sin recargar la página
-                const overlayMsg = document.createElement('div');
-                overlayMsg.style.position = 'fixed';
-                overlayMsg.style.top = '0';
-                overlayMsg.style.left = '0';
-                overlayMsg.style.width = '100%';
-                overlayMsg.style.height = '100%';
-                overlayMsg.style.backgroundColor = 'rgba(0,0,0,0.7)';
-                overlayMsg.style.display = 'flex';
-                overlayMsg.style.alignItems = 'center';
-                overlayMsg.style.justifyContent = 'center';
-                overlayMsg.style.zIndex = '2000';
-                overlayMsg.style.color = 'white';
-                overlayMsg.style.fontSize = '1.5rem';
-                overlayMsg.style.backdropFilter = 'blur(4px)';
-                overlayMsg.innerHTML = `<div style="background:#1e3b44; padding: 2rem; border-radius: 40px; text-align:center;"><i class="fas fa-door-open" style="font-size:3rem;"></i><h3>Has cerrado sesión</h3><p style="font-size:1rem;">Redirigiendo a la pantalla de inicio...</p></div>`;
-                document.body.appendChild(overlayMsg);
-                setTimeout(() => {
-                    window.location.href = '#'; // Simulación, pero se puede ajustar
-                    overlayMsg.style.opacity = '0';
-                    setTimeout(() => overlayMsg.remove(), 500);
-                    mostrarMensajeFlotante("Para acceder nuevamente, inicia sesión.");
-                }, 1500);
-            }
-        }, 200);
+            sessionStorage.clear();
+            window.location.href = '../index.html';
+        }, 900);
     }
 
     // Asignar eventos a los botones de cierre de sesión (ambos)
@@ -484,6 +465,11 @@
 
     // Inicializar toda la interfaz
     function init() {
+        const rol = sessionStorage.getItem('usuario_rol');
+        if (rol !== 'administrador') {
+            window.location.href = '../index.html';
+            return;
+        }
         renderizarTabla();
         configurarLogout();
         addAnyExtraLogout();

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Hotel Mour | Detalle de reserva</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter', sans-serif; background:#eef2f7; color:#1a2c3e; padding:2rem 1.5rem; }
+        .container { max-width:760px; margin:0 auto; }
+        .back-link { color:#2c7da0; text-decoration:none; font-weight:600; font-size:0.9rem; display:inline-flex; align-items:center; gap:6px; margin-bottom:1.2rem; }
+        .back-link:hover { text-decoration:underline; }
+        .card { background:white; border-radius:32px; box-shadow:0 20px 35px -12px rgba(0,0,0,0.08); padding:2rem 2.2rem; }
+        .card h2 { font-size:1.5rem; color:#0b3b44; display:flex; align-items:center; gap:10px; margin-bottom:0.4rem; }
+        .card > p { color:#4e6e7c; font-size:0.85rem; margin-bottom:1.6rem; }
+        .info-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1.2rem; }
+        .info-item { background:#f8fafd; border-radius:16px; padding:1rem 1.2rem; border:1px solid #edf2f7; }
+        .info-item span { display:block; font-size:0.72rem; color:#7a99aa; text-transform:uppercase; letter-spacing:0.4px; margin-bottom:4px; }
+        .info-item strong { font-size:1rem; color:#1f3b44; }
+        .room-badge { background:#e9f3ef; color:#1e6f5c; padding:4px 12px; border-radius:50px; font-weight:500; font-size:0.8rem; display:inline-block; }
+        .actions { margin-top:1.8rem; display:flex; gap:1rem; flex-wrap:wrap; }
+        .btn-action { border:none; font-size:0.85rem; font-weight:600; padding:0.6rem 1.4rem; border-radius:30px; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:0.2s; }
+        .btn-edit { background:#fff0e6; color:#bc6f2c; border:1px solid #ffdec5; }
+        .btn-edit:hover { background:#ffe2d0; }
+        .empty { text-align:center; color:#5c6f87; padding:2rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="admin.html" class="back-link"><i class="fas fa-arrow-left"></i> Volver al panel de administración</a>
+    <div class="card" id="cardContent">
+        <div class="empty"><i class="fas fa-circle-exclamation" style="font-size:2rem; display:block; margin-bottom:0.6rem;"></i> No se encontró información de la reserva.</div>
+    </div>
+</div>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    const cliente = params.get('cliente');
+    const habitacion = params.get('habitacion');
+    const checkIn = params.get('checkin');
+    const checkOut = params.get('checkout');
+
+    if (id) {
+        document.getElementById('cardContent').innerHTML = `
+            <h2><i class="fas fa-receipt" style="color:#2b8c7a;"></i> Reserva ${id}</h2>
+            <p>Información detallada de la reserva seleccionada</p>
+            <div class="info-grid">
+                <div class="info-item"><span>ID Reserva</span><strong>${id}</strong></div>
+                <div class="info-item"><span>Cliente</span><strong>${cliente || '—'}</strong></div>
+                <div class="info-item"><span>Habitación</span><strong><span class="room-badge"><i class="fas fa-door-open"></i> ${habitacion || '—'}</span></strong></div>
+                <div class="info-item"><span>Check-In</span><strong><i class="fas fa-calendar-alt" style="color:#7899aa; margin-right:6px;"></i>${checkIn || '—'}</strong></div>
+                <div class="info-item"><span>Check-Out</span><strong><i class="fas fa-calendar-check" style="color:#7899aa; margin-right:6px;"></i>${checkOut || '—'}</strong></div>
+            </div>
+            <div class="actions">
+                <a class="btn-action btn-edit" href="reserva-editar.html?${params.toString()}"><i class="fas fa-pen-alt"></i> Editar esta reserva</a>
+            </div>
+        `;
+    }
+</script>
+</body>
+</html>

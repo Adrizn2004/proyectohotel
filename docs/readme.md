@@ -10,29 +10,29 @@ Abra su cliente de administración de bases de datos (ej. MySQL Workbench o cons
 
 Ejecute el script alojado en database/init.sql para crear la base de datos hotel_db, sus tablas y los registros de prueba.
 
-Abra el archivo backend/app.py en su editor de código.
+Abra el archivo backend/Program.cs en su editor de código.
 
-Modifique las credenciales (usuario y contraseña) en la función get_db_connection() para que coincidan con su configuración local de MySQL.
+Modifique la constante ConnectionString (usuario y contraseña) para que coincida con su configuración local de MySQL.
 
-2. Levantar el Servidor Backend (Python/Flask)
-El servidor proveerá la API de autenticación y los datos estructurados en formato JSON.
+2. Levantar el Servidor Backend (C# / ASP.NET Core)
+El servidor proveerá la API de autenticación y los datos estructurados en formato JSON. Requiere tener instalado el SDK de .NET 8 (https://dotnet.microsoft.com/download).
 
 Abra una terminal de comandos.
 
 Navegue al directorio del backend: cd ruta/hacia/plataforma-hotel/backend
 
-Instale las dependencias del proyecto ejecutando: pip install -r requirements.txt
+Restaure las dependencias del proyecto ejecutando: dotnet restore
 
-Inicie el servidor ejecutando: python app.py
+Inicie el servidor ejecutando: dotnet run
 
-Verifique que la terminal indique que el servicio está activo en el puerto 5000 (ej. http://127.0.0.1:5000). No cierre esta terminal.
+Verifique que la terminal indique que el servicio está activo en el puerto 5000 (ej. http://localhost:5000). No cierre esta terminal.
 
 3. Levantar la Interfaz Frontend (HTML/JS)
 La interfaz gráfica debe servirse a través de un protocolo HTTP local para evitar bloqueos por políticas de seguridad (CORS).
 
 Abra una nueva pestaña o ventana de terminal.
 
-Navegue al directorio del frontend: cd ruta/hacia/plataforma-hotel/frontend
+Navegue al directorio del frontend: cd ruta/hacia/plataforma-hotel/fronted
 
 Inicie el servidor web de desarrollo ejecutando: python -m http.server 8000
 
@@ -43,6 +43,6 @@ Con las capas de datos, servidor y cliente en ejecución, la plataforma está li
 
 Abra su navegador web y diríjase a: http://localhost:8000
 
-Prueba de Administrador: Ingrese con el correo admin@hotel.com y la contraseña 123456. El sistema debe redirigir a admin.html y cargar el detalle de las reservas mediante la consulta SQL.
+Prueba de Administrador: Ingrese con el correo admin@hotel.com y la contraseña 123456. El sistema debe redirigir a admin/admin.html y cargar el reporte de reservas.
 
-Prueba de Cliente: Retorne al login e ingrese con el correo cliente@hotel.com y la contraseña 123456. El sistema debe redirigir a cliente.html mostrando el catálogo de habitaciones.
+Prueba de Cliente: Retorne al login e ingrese con el correo cliente@hotel.com y la contraseña 123456. El sistema debe redirigir a cliente/cliente.html mostrando el catálogo de habitaciones. Desde ahí puede navegar a Mi Cuenta, Mis Reservas, Soporte, Servicios y crear una reserva real (queda guardada en la base de datos).

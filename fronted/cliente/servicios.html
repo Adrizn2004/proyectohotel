@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Hotel Mour | Servicios</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter', sans-serif; background:#f0f4f8; color:#1e2a3e; line-height:1.5; }
+        .app-wrapper { max-width:1200px; margin:0 auto; padding:1.5rem 2rem; }
+        .hotel-header { background:white; border-radius:1.5rem; padding:1.25rem 1.8rem; margin-bottom:2rem; box-shadow:0 8px 20px rgba(0,0,0,0.03); }
+        .logo-row { display:flex; justify-content:space-between; align-items:baseline; flex-wrap:wrap; margin-bottom:1.2rem; border-bottom:1px solid #e9edf2; padding-bottom:0.8rem; }
+        .hotel-name h1 { font-size:1.9rem; font-weight:700; background:linear-gradient(135deg,#1e4a6e,#2c7da0); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        .user-actions { display:flex; gap:1.2rem; align-items:center; }
+        .user-actions a { text-decoration:none; color:#2c7da0; font-weight:500; font-size:0.9rem; }
+        .user-actions a:hover { color:#0f3b4f; text-decoration:underline; }
+        .nav-links { display:flex; gap:1.8rem; flex-wrap:wrap; }
+        .nav-links a { text-decoration:none; font-weight:600; color:#2c3e50; font-size:0.95rem; display:inline-flex; align-items:center; gap:6px; }
+        .nav-links a.active { color:#1e6f8f; border-bottom:2px solid #2c7da0; padding-bottom:4px; }
+        .nav-links a i { color:#2c7da0; }
+        .nav-links a:hover { color:#1e6f8f; }
+        .page-title { background:white; border-radius:1.5rem; padding:1.6rem 2rem; margin-bottom:1.5rem; box-shadow:0 4px 12px rgba(0,0,0,0.03); }
+        .page-title h2 { font-size:1.6rem; font-weight:700; color:#0f2b3b; margin-bottom:0.4rem; display:flex; align-items:center; gap:10px; }
+        .page-title p { color:#5c6f87; font-size:0.85rem; }
+        .servicios-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:1.4rem; }
+        .servicio-card { background:white; border-radius:1.5rem; padding:1.6rem; box-shadow:0 6px 14px rgba(0,0,0,0.05); transition:transform 0.2s, box-shadow 0.2s; }
+        .servicio-card:hover { transform:translateY(-3px); box-shadow:0 16px 28px rgba(0,0,0,0.08); }
+        .servicio-icon { width:54px; height:54px; border-radius:1rem; display:flex; align-items:center; justify-content:center; font-size:1.4rem; color:white; margin-bottom:1rem; }
+        .servicio-card h3 { font-size:1.05rem; margin-bottom:0.5rem; color:#0f2b3b; }
+        .servicio-card p { font-size:0.85rem; color:#5c6f87; margin-bottom:0.8rem; }
+        .servicio-tag { display:inline-block; font-size:0.75rem; font-weight:600; padding:3px 12px; border-radius:50px; }
+        .tag-incluido { background:#e9f3ef; color:#1e6f5c; }
+        .tag-extra { background:#fff0e6; color:#bc6f2c; }
+        @media (max-width:680px) { .app-wrapper { padding:1rem; } .logo-row { flex-direction:column; align-items:flex-start; gap:0.8rem; } }
+    </style>
+</head>
+<body>
+<div class="app-wrapper">
+    <div class="hotel-header">
+        <div class="logo-row">
+            <div class="hotel-name"><h1><i class="fas fa-umbrella-beach"></i> Hotel Mour</h1></div>
+            <div class="user-actions">
+                <a href="cuenta.html"><i class="fas fa-user-circle"></i> Mi Cuenta</a>
+                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="cliente.html"><i class="fas fa-bed"></i> Habitaciones</a>
+            <a href="mis-reservas.html"><i class="fas fa-calendar-alt"></i> Mis Reservas</a>
+            <a href="soporte.html"><i class="fas fa-headset"></i> Soporte</a>
+            <a href="servicios.html" class="active"><i class="fas fa-concierge-bell"></i> Servicios</a>
+        </div>
+    </div>
+
+    <div class="page-title">
+        <h2><i class="fas fa-concierge-bell" style="color:#2c7da0;"></i> Servicios del hotel</h2>
+        <p>Disfruta de nuestras instalaciones y servicios pensados para tu comodidad</p>
+    </div>
+
+    <div class="servicios-grid">
+        <div class="servicio-card">
+            <div class="servicio-icon" style="background:linear-gradient(135deg,#2c7da0,#1a4b6e);"><i class="fas fa-wifi"></i></div>
+            <h3>Wi-Fi de alta velocidad</h3>
+            <p>Conexión a internet gratuita en todas las habitaciones y áreas comunes.</p>
+            <span class="servicio-tag tag-incluido">Incluido</span>
+        </div>
+        <div class="servicio-card">
+            <div class="servicio-icon" style="background:linear-gradient(135deg,#2b8c7a,#1e6f5c);"><i class="fas fa-utensils"></i></div>
+            <h3>Desayuno buffet</h3>
+            <p>Variedad de opciones nacionales e internacionales servidas cada mañana.</p>
+            <span class="servicio-tag tag-incluido">Incluido en habitaciones VIP/Suite</span>
+        </div>
+        <div class="servicio-card">
+            <div class="servicio-icon" style="background:linear-gradient(135deg,#7d5d4a,#9b7b64);"><i class="fas fa-spa"></i></div>
+            <h3>Spa y jacuzzi</h3>
+            <p>Relájate en nuestras instalaciones de bienestar con tratamientos a la carta.</p>
+            <span class="servicio-tag tag-extra">Servicio adicional</span>
+        </div>
+        <div class="servicio-card">
+            <div class="servicio-icon" style="background:linear-gradient(135deg,#9b59b6,#6c3483);"><i class="fas fa-dumbbell"></i></div>
+            <h3>Gimnasio 24/7</h3>
+            <p>Equipos modernos disponibles las 24 horas para nuestros huéspedes.</p>
+            <span class="servicio-tag tag-incluido">Incluido</span>
+        </div>
+        <div class="servicio-card">
+            <div class="servicio-icon" style="background:linear-gradient(135deg,#2c7da0,#5fa8d3);"><i class="fas fa-water-ladder"></i></div>
+            <h3>Piscina al aire libre</h3>
+            <p>Piscina con vista al mar abierta de 6:00 a.m. a 10:00 p.m.</p>
+            <span class="servicio-tag tag-incluido">Incluido</span>
+        </div>
+        <div class="servicio-card">
+            <div class="servicio-icon" style="background:linear-gradient(135deg,#bc6f2c,#9b551c);"><i class="fas fa-car"></i></div>
+            <h3>Servicio de valet parking</h3>
+            <p>Estacionamiento vigilado con servicio de aparcacoches.</p>
+            <span class="servicio-tag tag-extra">Servicio adicional</span>
+        </div>
+        <div class="servicio-card">
+            <div class="servicio-icon" style="background:linear-gradient(135deg,#1e6f5c,#289672);"><i class="fas fa-bell-concierge"></i></div>
+            <h3>Conserjería 24 horas</h3>
+            <p>Asistencia personalizada para reservas, tours y necesidades especiales.</p>
+            <span class="servicio-tag tag-incluido">Incluido</span>
+        </div>
+        <div class="servicio-card">
+            <div class="servicio-icon" style="background:linear-gradient(135deg,#34495e,#2c3e50);"><i class="fas fa-shirt"></i></div>
+            <h3>Lavandería y planchado</h3>
+            <p>Servicio de lavandería con entrega en menos de 24 horas.</p>
+            <span class="servicio-tag tag-extra">Servicio adicional</span>
+        </div>
+    </div>
+</div>
+
+<script>
+    const correo = sessionStorage.getItem('usuario_correo');
+    if (!correo) window.location.href = '../index.html';
+
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        sessionStorage.clear();
+        window.location.href = '../index.html';
+    });
+</script>
+</body>
+</html>

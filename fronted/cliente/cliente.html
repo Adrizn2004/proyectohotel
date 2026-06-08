@@ -445,16 +445,16 @@
                 <h1><i class="fas fa-umbrella-beach"></i> Hotel Mour</h1>
             </div>
             <div class="user-actions">
-                <a href="#"><i class="fas fa-user-circle"></i> Mi Cuenta</a>
-                <a href="index.html" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+                <a href="cuenta.html"><i class="fas fa-user-circle"></i> Mi Cuenta</a>
+                <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
             </div>
         </div>
         <div class="nav-dates">
             <div class="nav-links">
-                <a href="#"><i class="fas fa-bed"></i> Habitaciones</a>
-                <a href="#"><i class="fas fa-calendar-alt"></i> Mis Reservas</a>
-                <a href="#"><i class="fas fa-file-alt"></i> Hojas de Respuesta</a>
-                <a href="#"><i class="fas fa-concierge-bell"></i> Servicios</a>
+                <a href="cliente.html"><i class="fas fa-bed"></i> Habitaciones</a>
+                <a href="mis-reservas.html"><i class="fas fa-calendar-alt"></i> Mis Reservas</a>
+                <a href="soporte.html"><i class="fas fa-headset"></i> Soporte</a>
+                <a href="servicios.html"><i class="fas fa-concierge-bell"></i> Servicios</a>
             </div>
             <div class="date-range">
                 <span><i class="fas fa-calendar-check"></i> Entrada: 2/10 - 19/10</span>
@@ -510,11 +510,11 @@
 
     <div class="footer-quick">
         <div class="footer-links">
-            <a href="#">🏠 Habitaciones</a>
-            <a href="#">📋 Mis Reservas</a>
-            <a href="#">📞 Contacto</a>
-            <a href="#">🧾 Servicios</a>
-            <a href="#">ℹ️ Info Hotel</a>
+            <a href="cliente.html">🏠 Habitaciones</a>
+            <a href="mis-reservas.html">📋 Mis Reservas</a>
+            <a href="contacto.html">📞 Contacto</a>
+            <a href="servicios.html">🧾 Servicios</a>
+            <a href="info-hotel.html">ℹ️ Info Hotel</a>
         </div>
         <div class="copyright">
             <i class="far fa-copyright"></i> 2026 Hotel Mour · Relax frente al mar
@@ -680,8 +680,8 @@
             const amenitiesHtml = room.amenities.map(am => `<span class="feature-badge"><i class="fas fa-check-circle"></i> ${am}</span>`).join('');
             const priceDisplay = `${room.priceText} ${room.priceSuffix}`;
             const buttonGroup = `
-                <button class="btn-outline view-details" data-room="${room.name}"><i class="far fa-eye"></i> Ver más detalles</button>
-                <button class="btn-primary book-room" data-room="${room.name}" data-price="${room.priceText}"><i class="fas fa-calendar-check"></i> Reservar ahora</button>
+                <button class="btn-outline view-details" data-room='${JSON.stringify(room).replace(/'/g, "&apos;")}'><i class="far fa-eye"></i> Ver más detalles</button>
+                <button class="btn-primary book-room" data-name="${room.name}" data-price="${room.price}"><i class="fas fa-calendar-check"></i> Reservar ahora</button>
             `;
             return `
                 <div class="room-card" data-room-id="${room.id}">
@@ -708,15 +708,24 @@
 
         document.querySelectorAll('.view-details').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const roomName = btn.getAttribute('data-room');
-                alert(`🔍 Detalles de ${roomName}\n✔️ Incluye amenities destacados y servicios exclusivos. Para más información contacte recepción.`);
+                const room = JSON.parse(btn.getAttribute('data-room').replace(/&apos;/g, "'"));
+                const url = new URLSearchParams({
+                    nombre: room.name,
+                    precio: room.price,
+                    tipo: room.type,
+                    tamano: room.size,
+                    cama: room.bed,
+                    amenidades: room.amenities.join('|')
+                }).toString();
+                window.location.href = `habitacion.html?${url}`;
             });
         });
         document.querySelectorAll('.book-room').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                const roomName = btn.getAttribute('data-room');
-                const price = btn.getAttribute('data-price');
-                alert(`🛎️ ¡Excelente elección! Ha iniciado la reserva de ${roomName} por ${price} por noche. Próximamente podrá completar el pago y confirmar.`);
+                const nombre = btn.getAttribute('data-name');
+                const precio = btn.getAttribute('data-price');
+                const url = new URLSearchParams({ nombre, precio }).toString();
+                window.location.href = `reservar.html?${url}`;
             });
         });
     }
@@ -770,6 +779,18 @@
     }
 
     function init() {
+        const correo = sessionStorage.getItem('usuario_correo');
+        if (!correo) {
+            window.location.href = '../index.html';
+            return;
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            sessionStorage.clear();
+            window.location.href = '../index.html';
+        });
+
         minPriceFilter = 50;
         maxPriceFilter = 300;
         minPriceInput.value = 50;

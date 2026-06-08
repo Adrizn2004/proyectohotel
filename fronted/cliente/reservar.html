@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Hotel Mour | Reservar habitación</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter', sans-serif; background:#f0f4f8; color:#1e2a3e; line-height:1.5; }
+        .app-wrapper { max-width:760px; margin:0 auto; padding:1.5rem 2rem; }
+        .hotel-header { background:white; border-radius:1.5rem; padding:1.25rem 1.8rem; margin-bottom:2rem; box-shadow:0 8px 20px rgba(0,0,0,0.03); }
+        .hotel-name h1 { font-size:1.9rem; font-weight:700; background:linear-gradient(135deg,#1e4a6e,#2c7da0); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        .back-link { color:#2c7da0; text-decoration:none; font-weight:600; font-size:0.9rem; display:inline-flex; align-items:center; gap:6px; margin-bottom:1.2rem; }
+        .back-link:hover { text-decoration:underline; }
+        .card { background:white; border-radius:1.5rem; padding:1.8rem 2rem; box-shadow:0 4px 12px rgba(0,0,0,0.03); }
+        .resumen { background:#f8fafd; border:1px solid #edf2f7; border-radius:1.2rem; padding:1.2rem 1.4rem; margin-bottom:1.5rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem; align-items:center; }
+        .resumen h3 { font-size:1.1rem; color:#0f2b3b; }
+        .resumen .precio { font-size:1.3rem; font-weight:800; color:#0f5b7a; }
+        .form-group { margin-bottom:1.2rem; }
+        .form-row { display:flex; gap:1rem; flex-wrap:wrap; }
+        .form-row .form-group { flex:1; min-width:200px; }
+        .form-group label { display:block; font-weight:600; font-size:0.85rem; margin-bottom:0.5rem; color:#1f3b44; }
+        .form-group input { width:100%; padding:0.8rem 1rem; border:1px solid #cbd5e1; border-radius:1rem; font-size:0.9rem; font-family:inherit; }
+        .form-group input:focus { outline:none; border-color:#2c7da0; box-shadow:0 0 0 3px rgba(44,125,160,0.15); }
+        .form-group input[readonly] { background:#f1f5f9; color:#5c6f87; }
+        .total-box { background:#e7f1f8; border-radius:1.2rem; padding:1rem 1.4rem; display:flex; justify-content:space-between; align-items:center; margin:1rem 0 1.4rem; font-weight:700; color:#1a4b6e; }
+        .total-box span:last-child { font-size:1.3rem; }
+        .btn-primary { background:#2c7da0; border:none; padding:0.8rem 1.8rem; border-radius:60px; font-weight:700; color:white; cursor:pointer; display:inline-flex; align-items:center; gap:8px; transition:0.2s; width:100%; justify-content:center; font-size:1rem; }
+        .btn-primary:hover { background:#1f5e7a; }
+        .btn-primary:disabled { opacity:0.6; cursor:not-allowed; }
+        .msg-area { margin-top:1.2rem; }
+        .dynamic-msg { padding:0.9rem 1.2rem; border-radius:1rem; font-size:0.88rem; font-weight:500; border-left:4px solid; display:flex; align-items:center; gap:10px; }
+        .dynamic-msg.success { background:#e9f3ef; border-color:#2b8c7a; color:#1e6f5c; }
+        .dynamic-msg.error { background:#fdeeee; border-color:#c66b6b; color:#9b3b3b; }
+    </style>
+</head>
+<body>
+<div class="app-wrapper">
+    <div class="hotel-header"><div class="hotel-name"><h1><i class="fas fa-umbrella-beach"></i> Hotel Mour</h1></div></div>
+
+    <a href="cliente.html" class="back-link"><i class="fas fa-arrow-left"></i> Volver a habitaciones</a>
+
+    <div class="card">
+        <div class="resumen">
+            <div>
+                <h3 id="roomName">Habitación</h3>
+                <span style="font-size:0.8rem; color:#5c6f87;">Reservando como <strong id="correoUsuario">—</strong></span>
+            </div>
+            <div class="precio" id="roomPrice">$0 USD <span style="font-size:0.8rem; font-weight:500; color:#5c6f87;">/noche</span></div>
+        </div>
+
+        <form id="formReserva">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="fechaIngreso">Fecha de ingreso</label>
+                    <input type="date" id="fechaIngreso" required>
+                </div>
+                <div class="form-group">
+                    <label for="fechaSalida">Fecha de salida</label>
+                    <input type="date" id="fechaSalida" required>
+                </div>
+            </div>
+
+            <div class="total-box">
+                <span><i class="fas fa-moon"></i> <span id="numNoches">0</span> noche(s)</span>
+                <span id="totalPrecio">$0 USD</span>
+            </div>
+
+            <button type="submit" class="btn-primary" id="btnConfirmar"><i class="fas fa-check-circle"></i> Confirmar reserva</button>
+            <div class="msg-area" id="msgArea"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const correo = sessionStorage.getItem('usuario_correo');
+    if (!correo) window.location.href = '../index.html';
+
+    const params = new URLSearchParams(window.location.search);
+    const nombre = params.get('nombre') || 'Habitación';
+    const precio = parseFloat(params.get('precio') || '0');
+
+    document.getElementById('correoUsuario').textContent = correo;
+    document.getElementById('roomName').textContent = nombre;
+    document.getElementById('roomPrice').innerHTML = `$${precio.toFixed(2)} USD <span style="font-size:0.8rem; font-weight:500; color:#5c6f87;">/noche</span>`;
+
+    const fechaIngresoInput = document.getElementById('fechaIngreso');
+    const fechaSalidaInput = document.getElementById('fechaSalida');
+    const numNochesSpan = document.getElementById('numNoches');
+    const totalPrecioSpan = document.getElementById('totalPrecio');
+
+    const hoy = new Date();
+    const manana = new Date(hoy.getTime() + 24 * 60 * 60 * 1000);
+    fechaIngresoInput.min = hoy.toISOString().slice(0, 10);
+    fechaIngresoInput.value = hoy.toISOString().slice(0, 10);
+    fechaSalidaInput.value = manana.toISOString().slice(0, 10);
+
+    function calcularNoches() {
+        const ingreso = new Date(fechaIngresoInput.value);
+        const salida = new Date(fechaSalidaInput.value);
+        const noches = Math.round((salida - ingreso) / (1000 * 60 * 60 * 24));
+        return noches > 0 ? noches : 0;
+    }
+
+    function actualizarTotal() {
+        fechaSalidaInput.min = fechaIngresoInput.value;
+        const noches = calcularNoches();
+        numNochesSpan.textContent = noches;
+        totalPrecioSpan.textContent = `$${(noches * precio).toFixed(2)} USD`;
+    }
+
+    fechaIngresoInput.addEventListener('change', actualizarTotal);
+    fechaSalidaInput.addEventListener('change', actualizarTotal);
+    actualizarTotal();
+
+    const form = document.getElementById('formReserva');
+    const btnConfirmar = document.getElementById('btnConfirmar');
+    const msgArea = document.getElementById('msgArea');
+
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        msgArea.innerHTML = '';
+
+        const noches = calcularNoches();
+        if (noches <= 0) {
+            msgArea.innerHTML = `<div class="dynamic-msg error"><i class="fas fa-triangle-exclamation"></i> La fecha de salida debe ser posterior a la de ingreso.</div>`;
+            return;
+        }
+
+        btnConfirmar.disabled = true;
+        btnConfirmar.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+
+        try {
+            const resp = await fetch('http://localhost:5000/api/reservas', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    correo: correo,
+                    habitacion: nombre,
+                    fecha_ingreso: fechaIngresoInput.value,
+                    fecha_salida: fechaSalidaInput.value,
+                    precio_unitario: precio
+                })
+            });
+            const resultado = await resp.json();
+
+            if (resultado.estado === 'exito') {
+                msgArea.innerHTML = `
+                    <div class="dynamic-msg success">
+                        <i class="fas fa-check-circle"></i>
+                        ¡Reserva #${resultado.id_reserva} confirmada! Puedes verla en
+                        <a href="mis-reservas.html" style="color:#1e6f5c; font-weight:700;">Mis Reservas</a>.
+                    </div>`;
+                btnConfirmar.innerHTML = '<i class="fas fa-check"></i> Reserva confirmada';
+                setTimeout(() => { window.location.href = 'mis-reservas.html'; }, 1800);
+            } else {
+                msgArea.innerHTML = `<div class="dynamic-msg error"><i class="fas fa-triangle-exclamation"></i> ${resultado.mensaje || 'No se pudo crear la reserva.'}</div>`;
+                btnConfirmar.disabled = false;
+                btnConfirmar.innerHTML = '<i class="fas fa-check-circle"></i> Confirmar reserva';
+            }
+        } catch (err) {
+            msgArea.innerHTML = `<div class="dynamic-msg error"><i class="fas fa-triangle-exclamation"></i> No se pudo conectar con el servidor. Intenta nuevamente.</div>`;
+            btnConfirmar.disabled = false;
+            btnConfirmar.innerHTML = '<i class="fas fa-check-circle"></i> Confirmar reserva';
+        }
+    });
+</script>
+</body>
+</html>
