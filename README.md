@@ -162,7 +162,75 @@ Para **agregar uno nuevo**, copia la estructura de uno parecido y cambia la ruta
 
 Después de cualquier cambio en `Program.cs`, **detén el backend** (`Ctrl+C` en su terminal) y vuelve a correr `dotnet run` para que tome los cambios.
 
-### e) Modificar el frontend (textos, estilos, comportamiento de botones)
+### e) Cambiar el tipo de moneda (ej. de USD a otra)
+
+La moneda **no se guarda en la base de datos** — los precios son números simples (`80.00`, `180.00`, etc.) y el texto "USD" está escrito directamente en el frontend. Para cambiarlo, edita el `<script>` de cada una de estas páginas y reemplaza `USD` por la moneda que quieras (ej. `COP`, `EUR`, `MXN`):
+
+| Archivo | Qué buscar |
+|---|---|
+| [`fronted/cliente/cliente.html`](fronted/cliente/cliente.html:542) | `priceText: \`$${h.precio} USD\`` |
+| [`fronted/cliente/habitacion.html`](fronted/cliente/habitacion.html:66) | `` `$${precio} USD <span>/noche</span>` `` |
+| [`fronted/cliente/reservar.html`](fronted/cliente/reservar.html:51) | las líneas con `$0 USD`, `roomPrice` y `totalPrecio` |
+| [`fronted/admin/admin.html`](fronted/admin/admin.html:546) | `formatearMoneda(valor)` → `` return `$${...} USD` `` |
+
+Si además quieres cambiar el símbolo `$` (por ejemplo a `€`), reemplázalo junto con `USD` en esos mismos lugares. El número del precio no necesita cambiar — solo el texto que lo acompaña.
+
+### f) Cambiar el dominio de correo del hotel (ej. de `@hotel.com` a `@mour.com`)
+
+El dominio `hotel.com` solo aparece en la **cuenta semilla del administrador** — los clientes pueden registrarse con cualquier correo, no hay ninguna validación de dominio. Para cambiar el correo del administrador:
+
+1. Si ya tienes la base de datos creada, ejecuta en MySQL:
+   ```sql
+   UPDATE usuarios SET correo = 'admin@mour.com' WHERE correo = 'admin@hotel.com';
+   ```
+2. Para que una instalación nueva quede con el correo nuevo desde el inicio, edita la fila de inserción del administrador en [`database/init.sql`](database/init.sql:58):
+   ```sql
+   ('admin@mour.com', 'Administrador Hotel', '123456', 'administrador');
+   ```
+3. Actualiza también las referencias visuales en [`fronted/index.html`](fronted/index.html:360) (el valor por defecto del campo de correo y el texto "Demo: admin@hotel.com / 123456").
+
+### g) Agregar o quitar servicios del hotel
+
+La página [`fronted/cliente/servicios.html`](fronted/cliente/servicios.html) es estática — los servicios **no vienen de la base de datos**, son tarjetas (`.servicio-card`) escritas directamente en el HTML (a partir de la línea 63). Para agregar uno nuevo, copia un bloque completo y ajusta su contenido:
+
+```html
+<div class="servicio-card">
+    <div class="servicio-icon" style="background:linear-gradient(135deg,#2c7da0,#1a4b6e);"><i class="fas fa-spa"></i></div>
+    <h3>Nombre del servicio</h3>
+    <p>Descripción breve del servicio.</p>
+    <span class="servicio-tag tag-incluido">Incluido</span>
+</div>
+```
+- Cambia el ícono (`<i class="fas fa-...">`) por cualquiera de [Font Awesome](https://fontawesome.com/search?o=r&m=free).
+- Usa la clase `tag-incluido` (verde) para servicios incluidos o `tag-extra` (naranja) para servicios con costo adicional.
+- Para **quitar** un servicio, simplemente borra su bloque `<div class="servicio-card">...</div>` completo.
+
+> Nota: la sección "Servicios" del filtro de habitaciones (`desayuno`, `jacuzzi`, `wifi` en `cliente.html`) es independiente — esos sí vienen de la base de datos (columnas `incluye_desayuno`, `tiene_jacuzzi`, `tiene_wifi` de la tabla `habitaciones`).
+
+### h) Agregar fotos a las habitaciones
+
+Actualmente las habitaciones no usan fotos individuales: cada una muestra una imagen genérica según su `tipo` (`estandar` → `img-standard`, `vip` → `img-vip`, `suite` → `img-suite`), definida como `background-image` en el CSS de dos páginas:
+
+- [`fronted/cliente/cliente.html`](fronted/cliente/cliente.html:425) (tarjetas del catálogo)
+- [`fronted/cliente/habitacion.html`](fronted/cliente/habitacion.html:19) (vista de detalle)
+
+**Opción rápida — una foto por tipo de habitación:**
+Reemplaza la URL de `placehold.co` dentro de `url('...')` por la URL de tu propia imagen (puede ser un enlace externo o un archivo local):
+```css
+.img-vip {
+    background-image: linear-gradient(125deg, #7d5d4a, #9b7b64), url('imagenes/vip.jpg');
+    background-blend-mode: overlay;
+}
+```
+Si usas archivos locales, crea una carpeta (ej. `fronted/cliente/imagenes/`) y coloca ahí tus `.jpg`/`.png`; la ruta en `url()` debe ser relativa al archivo HTML.
+
+**Opción avanzada — una foto distinta por habitación:**
+Esto requiere más cambios porque la foto dejaría de depender del `tipo` y pasaría a depender de cada habitación:
+1. Agrega una columna `imagen_url VARCHAR(255)` a la tabla `habitaciones` (ver sección c) y guarda ahí la ruta o URL de la foto de cada habitación.
+2. Incluye esa columna en el `SELECT` de `/api/habitaciones` en [`backend/Program.cs`](backend/Program.cs:58) y en el objeto que arma la respuesta.
+3. En el frontend, en lugar de aplicar la clase `imgClass`, usa `style="background-image: url('${h.imagen_url}')"` (o un `<img src="${h.imagen_url}">`) directamente sobre la tarjeta.
+
+### i) Modificar el frontend (textos, estilos, comportamiento de botones)
 
 Cada página vive en `fronted/` (cliente en `fronted/cliente/`, administrador en `fronted/admin/`, login y registro en la raíz de `fronted/`). Cada archivo `.html` contiene su propio `<style>` (CSS) y `<script>` (JavaScript) — no hay un build ni compilación, así que **cualquier cambio que guardes se ve recargando la página en el navegador**.
 
