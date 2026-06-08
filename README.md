@@ -43,8 +43,10 @@ cd proyectohotel
 Con el servicio de MySQL corriendo, ejecuta el script [`database/init.sql`](database/init.sql). Desde la terminal:
 
 ```powershell
-mysql -u root -p < database/init.sql
+Get-Content database\init.sql | mysql -u root -p
 ```
+> **Nota**: en PowerShell el operador `<` no sirve para redirigir archivos (a diferencia de Bash/CMD) — por eso se usa `Get-Content ... | mysql ...` para enviarle el script a MySQL.
+
 (te pedirá la contraseña de root). Esto crea la base `hotel_db`, todas las tablas (`usuarios`, `habitaciones`, `reservas`, `detalle_reservas`, `soporte`) y la cuenta de administrador semilla.
 
 Si prefieres usar una interfaz gráfica: abre **MySQL Workbench**, conéctate a tu servidor local, abre el archivo `database/init.sql` y ejecútalo con el botón ⚡ (rayo).
