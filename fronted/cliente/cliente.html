@@ -491,9 +491,9 @@
             <div class="filter-section">
                 <h3><i class="fas fa-concierge-bell"></i> Servicios</h3>
                 <div class="filter-group" id="servicesFilters">
-                    <label><input type="checkbox" value="desayuno" checked> Desayuno incluido</label>
-                    <label><input type="checkbox" value="jacuzzi" checked> Jacuzzi</label>
-                    <label><input type="checkbox" value="wifi" checked> Wi-Fi gratis</label>
+                    <label><input type="checkbox" value="desayuno"> Desayuno incluido</label>
+                    <label><input type="checkbox" value="jacuzzi"> Jacuzzi</label>
+                    <label><input type="checkbox" value="wifi"> Wi-Fi gratis</label>
                 </div>
             </div>
             <button class="reset-filters" id="resetFiltersBtn"><i class="fas fa-sync-alt"></i> Restablecer filtros</button>
@@ -523,60 +523,34 @@
 </div>
 
 <script>
-    // Nuevos datos de habitaciones: Estándar, VIP, Suite
-    const roomsData = [
-        {
-            id: "estandar",
-            type: "estandar",
-            name: "Habitación Estándar",
-            size: "28 m²",
-            bed: "Cama Queen o 2 individuales",
-            amenities: ["WiFi gratis", "TV LCD", "Aire acondicionado", "Escritorio", "Baño privado"],
-            price: 80,
-            priceText: "$80 USD",
-            priceSuffix: "/noche",
-            imgClass: "img-standard",
-            services: {
-                desayuno: false,
-                jacuzzi: false,
-                wifi: true
-            }
-        },
-        {
-            id: "vip",
-            type: "vip",
-            name: "Habitación VIP",
-            size: "38 m²",
-            bed: "Cama King",
-            amenities: ["WiFi premium", "TV Smart", "Aire", "Jacuzzi privado", "Vestidor", "Desayuno incluido"],
-            price: 180,
-            priceText: "$180 USD",
-            priceSuffix: "/noche",
-            imgClass: "img-vip",
-            services: {
-                desayuno: true,
-                jacuzzi: true,
-                wifi: true
-            }
-        },
-        {
-            id: "suite",
-            type: "suite",
-            name: "Suite Presidencial",
-            size: "65 m²",
-            bed: "Cama King + sala de estar",
-            amenities: ["Terraza", "WiFi ultra", "Jacuzzi", "Desayuno buffet", "Minibar", "Vista panorámica"],
-            price: 250,
-            priceText: "$250 USD",
-            priceSuffix: "/noche",
-            imgClass: "img-suite",
-            services: {
-                desayuno: true,
-                jacuzzi: true,
-                wifi: true
-            }
+    // Catálogo real de habitaciones, cargado desde el backend (ver cargarHabitaciones)
+    let roomsData = [];
+
+    async function cargarHabitaciones() {
+        roomsContainer.innerHTML = `<div class="no-results"><i class="fas fa-spinner fa-spin"></i> Cargando habitaciones...</div>`;
+        try {
+            const respuesta = await fetch('http://localhost:5000/api/habitaciones');
+            const datos = await respuesta.json();
+            roomsData = datos.map(h => ({
+                id: h.numero,
+                type: h.tipo,
+                name: `${h.nombre} · Hab. ${h.numero}`,
+                size: h.tamano,
+                bed: h.cama,
+                amenities: h.amenidades,
+                price: h.precio,
+                priceText: `$${h.precio} USD`,
+                priceSuffix: "/noche",
+                imgClass: h.imagen_clase,
+                services: h.servicios
+            }));
+        } catch (err) {
+            roomsData = [];
+            roomsContainer.innerHTML = `<div class="no-results"><i class="fas fa-triangle-exclamation"></i> No se pudo conectar con el servidor. Verifica que el backend esté activo en el puerto 5000.</div>`;
+            return;
         }
-    ];
+        applyFilters();
+    }
 
     let minPriceFilter = 50;
     let maxPriceFilter = 300;
@@ -798,7 +772,7 @@
         sliderMin.value = 50;
         sliderMax.value = 300;
         initFiltersEventListeners();
-        applyFilters();
+        cargarHabitaciones();
     }
 
     init();

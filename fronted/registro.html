@@ -93,6 +93,13 @@
             <form id="form-registro" novalidate>
                 <div class="input-group">
                     <div class="input-field">
+                        <i class="fas fa-id-card"></i>
+                        <input type="text" id="nombre" placeholder="Nombre completo" autocomplete="name" required>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-field">
                         <i class="fas fa-envelope"></i>
                         <input type="email" id="correo" placeholder="Correo electrónico" autocomplete="email" required>
                     </div>
@@ -127,6 +134,7 @@
 
     <script>
         const form = document.getElementById('form-registro');
+        const nombreInput = document.getElementById('nombre');
         const correoInput = document.getElementById('correo');
         const contrasenaInput = document.getElementById('contrasena');
         const confirmarInput = document.getElementById('confirmar');
@@ -144,9 +152,15 @@
 
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
+            const nombre = nombreInput.value.trim();
             const correo = correoInput.value.trim().toLowerCase();
             const contrasena = contrasenaInput.value;
             const confirmar = confirmarInput.value;
+
+            if (!nombre) {
+                showMessage('🪪 Ingresa tu nombre completo', 'error');
+                return;
+            }
 
             const emailRegex = /^[^\s@]+@([^\s@]+\.)+[^\s@]+$/;
             if (!emailRegex.test(correo)) {
@@ -169,7 +183,7 @@
                 const respuesta = await fetch('http://localhost:5000/api/registro', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ correo, contrasena })
+                    body: JSON.stringify({ correo, contrasena, nombre })
                 });
                 const resultado = await respuesta.json();
 

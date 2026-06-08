@@ -102,7 +102,73 @@
             padding: 2rem;
         }
         .page-title {
+            margin-bottom: 1.6rem;
+        }
+
+        /* tarjetas de estadísticas / ingresos */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.1rem;
             margin-bottom: 2rem;
+        }
+        .stat-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 22px;
+            padding: 1.4rem 1.6rem;
+            color: white;
+            box-shadow: 0 14px 28px -10px rgba(0,0,0,0.18);
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 36px -10px rgba(0,0,0,0.24);
+        }
+        .stat-card i.bg-icon {
+            position: absolute;
+            right: -14px;
+            bottom: -18px;
+            font-size: 5rem;
+            opacity: 0.18;
+        }
+        .stat-card .stat-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            opacity: 0.85;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .stat-card .stat-value {
+            font-size: 1.9rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+            letter-spacing: -0.5px;
+        }
+        .stat-card .stat-hint {
+            font-size: 0.75rem;
+            opacity: 0.8;
+            margin-top: 0.3rem;
+        }
+        .stat-card.card-reservas { background: linear-gradient(135deg, #2c7da0, #1e4a6e); }
+        .stat-card.card-confirmados { background: linear-gradient(135deg, #2b8c7a, #1a5c4f); }
+        .stat-card.card-proyectados { background: linear-gradient(135deg, #d98e3c, #b3631c); }
+        .stat-card.card-total { background: linear-gradient(135deg, #6a4ea0, #45316b); }
+        @keyframes pulseDot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+        .live-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #5dd9b0;
+            animation: pulseDot 1.6s infinite;
+            margin-right: 6px;
         }
         .page-title h2 {
             font-size: 1.8rem;
@@ -208,6 +274,85 @@
             background: #ffe2d0;
             color: #9b551c;
         }
+        .btn-cancel {
+            background: #fdeaea;
+            color: #b3392c;
+            border: 1px solid #f6cfcf;
+        }
+        .btn-cancel:hover {
+            background: #fbdada;
+            color: #8c2a20;
+        }
+
+        /* modal de confirmación para cancelar reservas (solo administrador) */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 30, 40, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+        .modal-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        .modal-box {
+            background: white;
+            border-radius: 24px;
+            padding: 1.8rem 2rem;
+            max-width: 420px;
+            width: 90%;
+            box-shadow: 0 30px 60px -15px rgba(0,0,0,0.3);
+            transform: translateY(14px);
+            transition: transform 0.2s ease;
+        }
+        .modal-overlay.visible .modal-box {
+            transform: translateY(0);
+        }
+        .modal-box h3 {
+            font-size: 1.15rem;
+            color: #8c2a20;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 0.6rem;
+        }
+        .modal-box p {
+            font-size: 0.88rem;
+            color: #4e6e7c;
+            margin-bottom: 1.4rem;
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.8rem;
+        }
+        .btn-modal {
+            border: none;
+            border-radius: 50px;
+            padding: 0.6rem 1.4rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        .btn-modal-keep {
+            background: #f0f4f8;
+            color: #4e6e7c;
+        }
+        .btn-modal-keep:hover { background: #e3eaf1; }
+        .btn-modal-confirm {
+            background: #d44b3a;
+            color: white;
+        }
+        .btn-modal-confirm:hover { background: #b53a2a; }
+
         /* footer o info extra */
         .admin-footer {
             margin-top: 2rem;
@@ -264,9 +409,9 @@
             <p>Gestión integral · Excelencia hotelera</p>
         </div>
         <div class="admin-welcome">
-            <div class="welcome-badge">
-                <i class="fas fa-user-shield"></i> Bienvenido, Administrador Carlos P.
-            </div>
+            <a href="cuenta.html" class="welcome-badge" id="welcomeBadge" style="text-decoration:none; cursor:pointer;">
+                <i class="fas fa-user-shield"></i> <span id="welcomeNombre">Bienvenido, Administrador</span>
+            </a>
             <button class="logout-btn desktop-logout" id="logoutBtnDesktop">
                 <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
             </button>
@@ -279,7 +424,34 @@
             <h2>
                 <i class="fas fa-chart-simple"></i> Reporte General de Reservas
             </h2>
-            <p>Listado completo de reservas activas · Actualizado al instante</p>
+            <p><span class="live-dot"></span>Listado completo de reservas activas · Actualizado al instante</p>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card card-reservas">
+                <i class="fas fa-calendar-days bg-icon"></i>
+                <div class="stat-label"><i class="fas fa-clipboard-list"></i> Reservas registradas</div>
+                <div class="stat-value" id="statTotalReservas">—</div>
+                <div class="stat-hint">Total de reservas en el sistema</div>
+            </div>
+            <div class="stat-card card-confirmados">
+                <i class="fas fa-sack-dollar bg-icon"></i>
+                <div class="stat-label"><i class="fas fa-circle-check"></i> Ingresos confirmados</div>
+                <div class="stat-value" id="statIngresosConfirmados">—</div>
+                <div class="stat-hint">Estancias ya finalizadas</div>
+            </div>
+            <div class="stat-card card-proyectados">
+                <i class="fas fa-hourglass-half bg-icon"></i>
+                <div class="stat-label"><i class="fas fa-arrow-trend-up"></i> Posibles ingresos</div>
+                <div class="stat-value" id="statIngresosProyectados">—</div>
+                <div class="stat-hint">Reservas futuras o en curso por cobrar</div>
+            </div>
+            <div class="stat-card card-total">
+                <i class="fas fa-coins bg-icon"></i>
+                <div class="stat-label"><i class="fas fa-chart-pie"></i> Ingreso total estimado</div>
+                <div class="stat-value" id="statIngresoTotal">—</div>
+                <div class="stat-hint">Confirmados + posibles</div>
+            </div>
         </div>
 
         <div class="table-wrapper">
@@ -289,6 +461,7 @@
                         <th>ID Reserva</th>
                         <th>Cliente</th>
                         <th>Habitación</th>
+                        <th>Registrada el</th>
                         <th>Check-In</th>
                         <th>Check-Out</th>
                         <th>Acciones</th>
@@ -312,51 +485,142 @@
     </div>
 </div>
 
+<!-- Modal de confirmación para cancelar una reserva (acción exclusiva del administrador) -->
+<div class="modal-overlay" id="modalCancelar">
+    <div class="modal-box">
+        <h3><i class="fas fa-triangle-exclamation"></i> Cancelar reserva <span id="modalReservaId"></span></h3>
+        <p>Esta acción eliminará la reserva de forma permanente y liberará la habitación. ¿Deseas continuar?</p>
+        <div class="modal-actions">
+            <button class="btn-modal btn-modal-keep" id="btnMantenerReserva">No, mantener</button>
+            <button class="btn-modal btn-modal-confirm" id="btnConfirmarCancelacion"><i class="fas fa-ban"></i> Sí, cancelar reserva</button>
+        </div>
+    </div>
+</div>
+
 <script>
-    // DATOS EXACTOS SEGÚN LA IMAGEN PROPORCIONADA
-    const reservasData = [
-        {
-            id: "HM001",
-            cliente: "Juan Pérez Meléndez",
-            habitacion: "101 Standard",
-            checkIn: "15/10/2023",
-            checkOut: "18/10/2023"
-        },
-        {
-            id: "HM002",
-            cliente: "María García Torres",
-            habitacion: "203 Superior",
-            checkIn: "16/10/2023",
-            checkOut: "20/10/2023"
-        },
-        {
-            id: "HM003",
-            cliente: "John Smith",
-            habitacion: "305 Suite",
-            checkIn: "17/10/2023",
-            checkOut: "22/10/2023"
-        },
-        {
-            id: "HM004",
-            cliente: "Emily Davis",
-            habitacion: "102 Standard",
-            checkIn: "18/10/2023",
-            checkOut: "21/10/2023"
-        },
-        {
-            id: "HM005",
-            cliente: "Carlos Rodríguez",
-            habitacion: "204 Superior",
-            checkIn: "19/10/2023",
-            checkOut: "25/10/2023"
+    // Reservas reales, cargadas desde el backend (ver cargarReservas)
+    let reservasData = [];
+
+    // Trae las reservas reales desde la base de datos vía el backend
+    async function cargarReservas() {
+        const tbody = document.getElementById('tablaReservasDynamic');
+        if (tbody) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:1.5rem; color:#7a99aa;"><i class="fas fa-spinner fa-spin"></i> Cargando reservas...</td></tr>';
         }
-    ];
+        try {
+            const respuesta = await fetch('http://localhost:5000/api/admin/reservas');
+            const datos = await respuesta.json();
+            reservasData = datos.map(r => ({
+                id: `HM${String(r.id_reserva).padStart(3, '0')}`,
+                cliente: r.correo,
+                habitacion: r.habitacion,
+                registradaEl: formatearFechaHora(r.fecha_registro),
+                checkIn: formatearFecha(r.fecha_ingreso),
+                checkOut: formatearFecha(r.fecha_salida),
+                fechaIngresoIso: r.fecha_ingreso,
+                fechaSalidaIso: r.fecha_salida,
+                precioUnitario: r.precio_unitario
+            }));
+        } catch (err) {
+            reservasData = [];
+            if (tbody) {
+                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:1.5rem; color:#bc6f2c;"><i class="fas fa-triangle-exclamation"></i> No se pudo conectar con el servidor. Verifica que el backend esté activo en el puerto 5000.</td></tr>';
+            }
+            renderizarEstadisticas();
+            return;
+        }
+        renderizarTabla();
+        renderizarEstadisticas();
+    }
+
+    // Calcula noches entre dos fechas ISO (mínimo 1 noche)
+    function calcularNoches(fechaIngresoIso, fechaSalidaIso) {
+        const ingreso = new Date(fechaIngresoIso);
+        const salida = new Date(fechaSalidaIso);
+        const noches = Math.round((salida - ingreso) / (1000 * 60 * 60 * 24));
+        return noches > 0 ? noches : 1;
+    }
+
+    // Formatea un valor numérico como moneda en USD (consistente con el resto del sitio)
+    function formatearMoneda(valor) {
+        return `$${Math.round(valor).toLocaleString('es-CO')} USD`;
+    }
+
+    // Lleva la cuenta de la animación vigente por elemento, para que si los datos
+    // se recargan varias veces seguidas, solo la animación más reciente pueda escribir el valor final.
+    const generacionAnimacion = new WeakMap();
+
+    // Anima un contador de 0 al valor final, mostrando el texto formateado en cada paso
+    // (usa setTimeout en lugar de requestAnimationFrame para que también corra en pestañas en segundo plano)
+    function animarContador(elemento, valorFinal, formateador) {
+        const miGeneracion = (generacionAnimacion.get(elemento) || 0) + 1;
+        generacionAnimacion.set(elemento, miGeneracion);
+
+        const pasos = 24;
+        const intervalo = 25;
+        let paso = 0;
+        function avanzar() {
+            if (generacionAnimacion.get(elemento) !== miGeneracion) return;
+            paso++;
+            const progreso = Math.min(paso / pasos, 1);
+            elemento.textContent = formateador(valorFinal * progreso);
+            if (progreso < 1) setTimeout(avanzar, intervalo);
+        }
+        avanzar();
+    }
+
+    // Calcula y muestra ingresos confirmados (estancias finalizadas) y posibles (futuras o en curso)
+    function renderizarEstadisticas() {
+        const elTotal = document.getElementById('statTotalReservas');
+        const elConfirmados = document.getElementById('statIngresosConfirmados');
+        const elProyectados = document.getElementById('statIngresosProyectados');
+        const elTotalIngreso = document.getElementById('statIngresoTotal');
+        if (!elTotal || !elConfirmados || !elProyectados || !elTotalIngreso) return;
+
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+
+        let confirmados = 0;
+        let proyectados = 0;
+        reservasData.forEach(r => {
+            const noches = calcularNoches(r.fechaIngresoIso, r.fechaSalidaIso);
+            const totalReserva = noches * Number(r.precioUnitario);
+            const salida = new Date(r.fechaSalidaIso);
+            if (salida <= hoy) confirmados += totalReserva;
+            else proyectados += totalReserva;
+        });
+
+        animarContador(elTotal, reservasData.length, v => Math.round(v).toLocaleString('es-CO'));
+        animarContador(elConfirmados, confirmados, formatearMoneda);
+        animarContador(elProyectados, proyectados, formatearMoneda);
+        animarContador(elTotalIngreso, confirmados + proyectados, formatearMoneda);
+    }
+
+    // Convierte 'YYYY-MM-DD' a 'DD/MM/YYYY' para mostrarlo en la tabla
+    function formatearFecha(fechaIso) {
+        if (!fechaIso) return '—';
+        const [anio, mes, dia] = fechaIso.split('-');
+        return `${dia}/${mes}/${anio}`;
+    }
+
+    // Convierte 'YYYY-MM-DD HH:mm' a 'DD/MM/YYYY · HH:mm' para mostrar fecha y hora de registro
+    function formatearFechaHora(fechaHoraIso) {
+        if (!fechaHoraIso) return '—';
+        const [fecha, hora] = fechaHoraIso.split(' ');
+        const [anio, mes, dia] = fecha.split('-');
+        return `${dia}/${mes}/${anio} · ${hora}`;
+    }
 
     // Función para renderizar la tabla con acciones (Ver Detalles / Editar)
     function renderizarTabla() {
         const tbody = document.getElementById('tablaReservasDynamic');
         if (!tbody) return;
-        
+
+        if (reservasData.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:1.5rem; color:#7a99aa;">Aún no hay reservas registradas.</td></tr>';
+            return;
+        }
+
         let htmlRows = '';
         reservasData.forEach(reserva => {
             htmlRows += `
@@ -364,6 +628,7 @@
                     <td><strong>${reserva.id}</strong></td>
                     <td>${reserva.cliente}</td>
                     <td><span class="room-badge"><i class="fas fa-door-open"></i> ${reserva.habitacion}</span></td>
+                    <td><i class="fas fa-clock" style="color:#7899aa; margin-right: 6px;"></i>${reserva.registradaEl}</td>
                     <td><i class="fas fa-calendar-alt" style="color:#7899aa; margin-right: 6px;"></i>${reserva.checkIn}</td>
                     <td><i class="fas fa-calendar-check" style="color:#7899aa; margin-right: 6px;"></i>${reserva.checkOut}</td>
                     <td class="action-buttons">
@@ -372,6 +637,9 @@
                         </button>
                         <button class="btn-action btn-edit" data-id="${reserva.id}" data-action="editar">
                             <i class="fas fa-pen-alt"></i> Editar
+                        </button>
+                        <button class="btn-action btn-cancel" data-id="${reserva.id}" data-action="cancelar">
+                            <i class="fas fa-ban"></i> Cancelar
                         </button>
                     </td>
                 </tr>
@@ -413,6 +681,70 @@
                 }
             });
         });
+
+        document.querySelectorAll('.btn-cancel').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const reservaId = btn.getAttribute('data-id');
+                const reserva = reservasData.find(r => r.id === reservaId);
+                if (reserva) {
+                    abrirModalCancelacion(reserva);
+                } else {
+                    mostrarMensajeFlotante(`No se puede cancelar, reserva no válida.`);
+                }
+            });
+        });
+    }
+
+    // --- Modal de confirmación para cancelar reservas (solo administrador) ---
+    let reservaPendienteDeCancelar = null;
+
+    function abrirModalCancelacion(reserva) {
+        reservaPendienteDeCancelar = reserva;
+        document.getElementById('modalReservaId').textContent = `#${reserva.id}`;
+        document.getElementById('modalCancelar').classList.add('visible');
+    }
+
+    function cerrarModalCancelacion() {
+        reservaPendienteDeCancelar = null;
+        document.getElementById('modalCancelar').classList.remove('visible');
+    }
+
+    async function confirmarCancelacionReserva() {
+        if (!reservaPendienteDeCancelar) return;
+        const reserva = reservaPendienteDeCancelar;
+        const idNumerico = parseInt(reserva.id.replace(/^HM/i, ''), 10);
+        const btnConfirmar = document.getElementById('btnConfirmarCancelacion');
+        if (btnConfirmar) btnConfirmar.disabled = true;
+
+        try {
+            const respuesta = await fetch(`http://localhost:5000/api/admin/reservas/${idNumerico}`, { method: 'DELETE' });
+            const resultado = await respuesta.json();
+            if (resultado.estado === 'exito') {
+                cerrarModalCancelacion();
+                mostrarMensajeFlotante(`✅ Reserva ${reserva.id} cancelada correctamente.`);
+                cargarReservas();
+            } else {
+                mostrarMensajeFlotante(`No se pudo cancelar: ${resultado.mensaje}`);
+            }
+        } catch (err) {
+            mostrarMensajeFlotante('No se pudo conectar con el servidor para cancelar la reserva.');
+        } finally {
+            if (btnConfirmar) btnConfirmar.disabled = false;
+        }
+    }
+
+    function configurarModalCancelacion() {
+        const overlay = document.getElementById('modalCancelar');
+        const btnMantener = document.getElementById('btnMantenerReserva');
+        const btnConfirmar = document.getElementById('btnConfirmarCancelacion');
+        if (btnMantener) btnMantener.addEventListener('click', cerrarModalCancelacion);
+        if (btnConfirmar) btnConfirmar.addEventListener('click', confirmarCancelacionReserva);
+        if (overlay) {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) cerrarModalCancelacion();
+            });
+        }
     }
 
     // Función auxiliar para mostrar notificaciones similares a alert pero más elegantes
@@ -470,9 +802,14 @@
             window.location.href = '../index.html';
             return;
         }
-        renderizarTabla();
+        const nombre = sessionStorage.getItem('usuario_nombre');
+        document.getElementById('welcomeNombre').textContent = nombre
+            ? `Bienvenido, ${nombre}`
+            : 'Bienvenido, Administrador';
+        cargarReservas();
         configurarLogout();
         addAnyExtraLogout();
+        configurarModalCancelacion();
         // Pequeño detalle: añadir efecto de bienvenida dinámica
         console.log("Panel de administración Hotel Mour cargado correctamente.");
     }

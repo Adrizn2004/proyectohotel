@@ -67,14 +67,55 @@
     document.getElementById('checkin').value = params.get('checkin') || '';
     document.getElementById('checkout').value = params.get('checkout') || '';
 
-    document.getElementById('formEditar').addEventListener('submit', function(e) {
+    // Convierte 'DD/MM/AAAA' a 'AAAA-MM-DD' (formato que espera el backend)
+    function aFechaIso(fechaVisual) {
+        const partes = fechaVisual.trim().split('/');
+        if (partes.length !== 3) return null;
+        const [dia, mes, anio] = partes;
+        if (!dia || !mes || !anio) return null;
+        return `${anio.padStart(4, '0')}-${mes.padStart(2, '0')}-${dia.padStart(2, '0')}`;
+    }
+
+    document.getElementById('formEditar').addEventListener('submit', async function(e) {
         e.preventDefault();
-        document.getElementById('msgArea').innerHTML = `
-            <div class="dynamic-msg">
-                <i class="fas fa-check-circle"></i>
-                Cambios guardados para la reserva ${id ? '#' + id : ''}. Redirigiendo al panel...
-            </div>`;
-        setTimeout(() => { window.location.href = 'admin.html'; }, 1400);
+        const msgArea = document.getElementById('msgArea');
+        const btnGuardar = this.querySelector('button[type="submit"]');
+
+        // El ID real de la reserva es el número detrás del prefijo "HM" (ej. HM003 -> 3)
+        const idReserva = parseInt(id.replace(/^HM/i, ''), 10);
+        const habitacion = document.getElementById('habitacion').value.trim();
+        const fechaIngreso = aFechaIso(document.getElementById('checkin').value);
+        const fechaSalida = aFechaIso(document.getElementById('checkout').value);
+
+        if (!idReserva || !habitacion || !fechaIngreso || !fechaSalida) {
+            msgArea.innerHTML = `<div class="dynamic-msg" style="background:#fef2e8; border-left-color:#bc6f2c; color:#9b551c;"><i class="fas fa-triangle-exclamation"></i> Verifica que las fechas estén en formato dd/mm/aaaa y que la reserva sea válida.</div>`;
+            return;
+        }
+
+        if (btnGuardar) btnGuardar.disabled = true;
+        try {
+            const respuesta = await fetch(`http://localhost:5000/api/admin/reservas/${idReserva}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ habitacion, fecha_ingreso: fechaIngreso, fecha_salida: fechaSalida })
+            });
+            const resultado = await respuesta.json();
+
+            if (resultado.estado === 'exito') {
+                msgArea.innerHTML = `
+                    <div class="dynamic-msg">
+                        <i class="fas fa-check-circle"></i>
+                        Cambios guardados para la reserva ${id ? '#' + id : ''}. Redirigiendo al panel...
+                    </div>`;
+                setTimeout(() => { window.location.href = 'admin.html'; }, 1400);
+            } else {
+                msgArea.innerHTML = `<div class="dynamic-msg" style="background:#fef2e8; border-left-color:#bc6f2c; color:#9b551c;"><i class="fas fa-triangle-exclamation"></i> ${resultado.mensaje}</div>`;
+                if (btnGuardar) btnGuardar.disabled = false;
+            }
+        } catch (err) {
+            msgArea.innerHTML = `<div class="dynamic-msg" style="background:#fef2e8; border-left-color:#bc6f2c; color:#9b551c;"><i class="fas fa-triangle-exclamation"></i> No se pudo conectar con el servidor.</div>`;
+            if (btnGuardar) btnGuardar.disabled = false;
+        }
     });
 </script>
 </body>

@@ -121,23 +121,42 @@
         });
     });
 
-    document.getElementById('formSoporte').addEventListener('submit', function(e) {
+    document.getElementById('formSoporte').addEventListener('submit', async function(e) {
         e.preventDefault();
         const asunto = document.getElementById('asunto').value.trim();
         const mensaje = document.getElementById('mensaje').value.trim();
         const msgArea = document.getElementById('msgArea');
+        const btnEnviar = this.querySelector('button[type="submit"]');
 
         if (!asunto || !mensaje) return;
 
-        msgArea.innerHTML = `
-            <div class="dynamic-msg success">
-                <i class="fas fa-check-circle"></i>
-                <span>${tipoSeleccionado} registrada correctamente. Te responderemos a <strong>${correo}</strong> en menos de 48 horas. Folio: SOP-${Date.now().toString().slice(-6)}</span>
-            </div>`;
-        this.reset();
-        document.querySelectorAll('.tipo-chip').forEach(c => c.classList.remove('selected'));
-        document.querySelector('.tipo-chip[data-tipo="Petición"]').classList.add('selected');
-        tipoSeleccionado = 'Petición';
+        if (btnEnviar) btnEnviar.disabled = true;
+        try {
+            const respuesta = await fetch('http://localhost:5000/api/soporte', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ correo, tipo: tipoSeleccionado, asunto, mensaje })
+            });
+            const resultado = await respuesta.json();
+
+            if (resultado.estado === 'exito') {
+                msgArea.innerHTML = `
+                    <div class="dynamic-msg success">
+                        <i class="fas fa-check-circle"></i>
+                        <span>${tipoSeleccionado} registrada correctamente. Te responderemos a <strong>${correo}</strong> en menos de 48 horas. Folio: ${resultado.folio}</span>
+                    </div>`;
+                this.reset();
+                document.querySelectorAll('.tipo-chip').forEach(c => c.classList.remove('selected'));
+                document.querySelector('.tipo-chip[data-tipo="Petición"]').classList.add('selected');
+                tipoSeleccionado = 'Petición';
+            } else {
+                msgArea.innerHTML = `<div class="dynamic-msg"><i class="fas fa-triangle-exclamation"></i> <span>${resultado.mensaje}</span></div>`;
+            }
+        } catch (err) {
+            msgArea.innerHTML = `<div class="dynamic-msg"><i class="fas fa-triangle-exclamation"></i> <span>No se pudo conectar con el servidor. Intenta nuevamente.</span></div>`;
+        } finally {
+            if (btnEnviar) btnEnviar.disabled = false;
+        }
     });
 
     document.getElementById('logoutBtn').addEventListener('click', (e) => {

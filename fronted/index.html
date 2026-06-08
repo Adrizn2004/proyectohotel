@@ -203,18 +203,6 @@
             height: 1rem;
             cursor: pointer;
         }
-        .forgot-link {
-            color: #C6AE6B;
-            font-size: 0.8rem;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        .forgot-link:hover {
-            color: #DFCD97;
-            text-decoration: underline;
-        }
-
         /* Botón principal con mayor peso visual */
         .login-btn {
             width: 100%;
@@ -385,7 +373,6 @@
                     <label class="checkbox-label">
                         <input type="checkbox" id="rememberCheck"> Mantener sesión
                     </label>
-                    <a href="#" class="forgot-link" id="forgotMock"><i class="fas fa-key"></i> ¿Olvidaste clave?</a>
                 </div>
 
                 <button type="submit" class="login-btn" id="loginButton">
@@ -577,6 +564,7 @@
                     sessionStorage.setItem('usuario_correo', resultado.usuario.correo);
                     sessionStorage.setItem('usuario_rol', resultado.usuario.rol);
                     sessionStorage.setItem('usuario_id', resultado.usuario.id_usuario);
+                    sessionStorage.setItem('usuario_nombre', resultado.usuario.nombre || '');
 
                     const esAdmin = resultado.usuario.rol === 'administrador';
                     showMessage(`✨ Bienvenido${esAdmin ? ', administrador' : ''}. Redirigiendo...`, 'success');
@@ -629,16 +617,6 @@
                 }
             }
 
-            function setupForgotLink() {
-                const forgotLink = document.getElementById('forgotMock');
-                if (forgotLink) {
-                    forgotLink.addEventListener('click', (e) => {
-                        e.preventDefault();
-                        showMessage('🔐 Restablecimiento: contacte con soporte@hotelmour.com o use demo: admin@hotel.com / 123456', 'error');
-                    });
-                }
-            }
-
             function setupLiveValidation() {
                 const clearErrorOnInput = () => {
                     clearMessage();
@@ -653,7 +631,6 @@
             form.addEventListener('submit', handleSubmit);
             setupInputFocus();
             setupPasswordToggle();
-            setupForgotLink();
             setupLiveValidation();
 
             setTimeout(() => {

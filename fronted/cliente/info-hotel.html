@@ -59,13 +59,13 @@
 
     <div class="card">
         <h3><i class="fas fa-circle-info"></i> Sobre nosotros</h3>
-        <p>Contamos con 80 habitaciones distribuidas en categorías Estándar, VIP y Suite, todas con vista parcial o total al mar. Nuestro equipo está comprometido con brindar un servicio cálido, ágil y personalizado durante toda tu estadía.</p>
+        <p>Contamos con <strong id="textoConteoHabitaciones">varias</strong> habitaciones distribuidas en categorías Estándar, VIP y Suite, todas con vista parcial o total al mar. Nuestro equipo está comprometido con brindar un servicio cálido, ágil y personalizado durante toda tu estadía.</p>
     </div>
 
     <div class="card">
         <h3><i class="fas fa-chart-simple"></i> Hotel Mour en cifras</h3>
         <div class="grid-2">
-            <div class="stat"><strong>80</strong><span>Habitaciones</span></div>
+            <div class="stat"><strong id="statHabitaciones">—</strong><span>Habitaciones</span></div>
             <div class="stat"><strong>15+</strong><span>Años de experiencia</span></div>
             <div class="stat"><strong>4.8 / 5</strong><span>Calificación de huéspedes</span></div>
             <div class="stat"><strong>24/7</strong><span>Atención al cliente</span></div>
@@ -87,6 +87,18 @@
         sessionStorage.clear();
         window.location.href = '../index.html';
     });
+
+    // Cuenta real de habitaciones, tomada del catálogo en la base de datos
+    (async () => {
+        try {
+            const respuesta = await fetch('http://localhost:5000/api/habitaciones');
+            const datos = await respuesta.json();
+            document.getElementById('statHabitaciones').textContent = datos.length;
+            document.getElementById('textoConteoHabitaciones').textContent = datos.length;
+        } catch (err) {
+            document.getElementById('statHabitaciones').textContent = '—';
+        }
+    })();
 </script>
 </body>
 </html>
